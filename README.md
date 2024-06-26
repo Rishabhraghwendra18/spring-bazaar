@@ -25,4 +25,7 @@ A E-Commerce site built using Java Spring Boot and NextJs.
     - /removeProduct
     - /viewOrders
 
-_Note: For V2, we will have Reviews table with fields such as item id, rating, review text, buyer id, etc.
+## ER Digram
+![ER Digram V1](./ER-Digram-v1.png)
+
+_Note: For V2, we will have Reviews table with fields such as item id, rating, review text, buyer id, etc._
