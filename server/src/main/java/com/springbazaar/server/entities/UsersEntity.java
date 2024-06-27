@@ -1,9 +1,7 @@
 package com.springbazaar.server.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.springbazaar.server.utils.UserRole;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,5 +22,6 @@ public class UsersEntity {
     @Column(name = "password")
     private String password;
     @Column(name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 }
