@@ -7,6 +7,7 @@ import com.springbazaar.server.services.UserService;
 import com.springbazaar.server.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +28,7 @@ public class Users {
         this.jwtUtil=jwtUtil;
     }
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse clientResponse){
-        if (loginRequest.getEmail() == null || loginRequest.getPassword() == null){
-            JwtResponse jwtResponse = new JwtResponse(null,loginRequest.getEmail(),"Missing email or password",true,null);
-            return new ResponseEntity<>(jwtResponse,HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse clientResponse){
         var jwtToken = userService.login(loginRequest);
         if (jwtToken != null){
             Cookie cookie = new Cookie("Authorization",jwtToken);
@@ -46,7 +43,7 @@ public class Users {
         return new ResponseEntity<>(jwtResponse,HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody UsersEntity user){
+    public ResponseEntity<Object> register(@Valid @RequestBody UsersEntity user){
         var res = userService.createUser(user);
         if(res == null){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Object(){
