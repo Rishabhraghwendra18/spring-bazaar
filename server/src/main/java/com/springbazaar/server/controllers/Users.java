@@ -24,8 +24,6 @@ public class Users {
         this.userService=userService;
         this.jwtUtil=jwtUtil;
     }
-    @GetMapping("/")
-    public String testing(){return "testing";}
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse clientResponse){
         var jwtToken = userService.login(loginRequest);
