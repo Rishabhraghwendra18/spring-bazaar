@@ -60,6 +60,7 @@ public class JwtUtil {
         return !isTokenExpired(token);
     }
     public String getTokenFromRequest(String token){
+        if (token == null) return null;
         if(token.startsWith("Bearer ")){
             return token.substring(7);
         }
