@@ -33,4 +33,8 @@ public class Order {
     public List<OrdersEntity> getAllBuyerOrders(@CookieValue("Authorization") String jwtToken){
         return orderService.getAllBuyerOrders(jwtToken);
     }
+    @PostMapping("/purchase")
+    public OrdersEntity createOrder(@RequestBody OrdersEntity ordersEntity,@CookieValue("Authorization") String jwtToken){
+        return orderService.createOrder(ordersEntity,jwtToken);
+    }
 }

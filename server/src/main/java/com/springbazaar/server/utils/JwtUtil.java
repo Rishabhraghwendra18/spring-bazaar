@@ -55,6 +55,10 @@ public class JwtUtil {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
+    public String getSubjectFromToken(String token){
+        var claims = getAllClaimsFromToken(token);
+        return claims.getSubject();
+    }
     //validate token
     public Boolean validateToken(String token) {
         return !isTokenExpired(token);

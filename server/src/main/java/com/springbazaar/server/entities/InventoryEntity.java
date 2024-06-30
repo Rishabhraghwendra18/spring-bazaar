@@ -1,6 +1,9 @@
 package com.springbazaar.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,8 +18,10 @@ public class InventoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "sellerId")
     private String sellerId;
+    @NotNull(message = "item quantity is required")
     @Column(name = "itemQuantity")
     private int itemQuantity;
     @Column(name = "itemTitle")

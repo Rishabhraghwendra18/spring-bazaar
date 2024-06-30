@@ -1,11 +1,14 @@
 package com.springbazaar.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -17,8 +20,10 @@ public class OrdersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderId")
     private Integer orderId;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "orderDate")
-    private Date orderDate;
+    private LocalDateTime orderDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "buyerId")
     private String buyerId;
     @Column(name = "deliveryAddress")
