@@ -24,6 +24,12 @@ public class InventoryService {
         inventoryEntity.setSellerId(sellerId);
         return inventoryRepository.save(inventoryEntity);
     }
+    public InventoryEntity updateProduct(InventoryEntity inventoryEntity){
+        if (inventoryEntity.getId() == null || inventoryEntity.getSellerId() == null){
+            return null;
+        }
+        return inventoryRepository.save(inventoryEntity);
+    }
     public InventoryEntity removeProduct(Integer id){
         Optional<InventoryEntity> item = inventoryRepository.findById(id);
         if (item.isPresent()){
