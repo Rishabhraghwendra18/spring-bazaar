@@ -21,4 +21,9 @@ public class Inventory {
     public InventoryEntity addProduct(@Valid @RequestBody InventoryEntity inventoryEntity, @CookieValue("Authorization") String jwtToken){
         return inventoryService.addProduct(inventoryEntity,jwtToken);
     }
+    @DeleteMapping("/removeproduct/{id}")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public InventoryEntity removeProduct(@PathVariable Integer id){
+        return inventoryService.removeProduct(id);
+    }
 }

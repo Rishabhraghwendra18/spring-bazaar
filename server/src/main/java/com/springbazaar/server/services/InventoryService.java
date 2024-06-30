@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class InventoryService {
     private final InventoryRepository inventoryRepository;
@@ -21,5 +23,13 @@ public class InventoryService {
         String sellerId=jwtUtil.getSubjectFromToken(jwtToken);
         inventoryEntity.setSellerId(sellerId);
         return inventoryRepository.save(inventoryEntity);
+    }
+    public InventoryEntity removeProduct(Integer id){
+        Optional<InventoryEntity> item = inventoryRepository.findById(id);
+        if (item.isPresent()){
+            inventoryRepository.deleteById(id);
+            return item.get();
+        }
+        return null;
     }
 }
