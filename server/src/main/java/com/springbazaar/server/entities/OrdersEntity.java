@@ -30,6 +30,7 @@ public class OrdersEntity {
     private String deliveryAddress;
     @Column(name = "pinCode")
     private int pinCode;
-    @Column(name = "itemId")
-    private int itemId;
+    @ManyToOne
+    @JoinColumn(name = "itemId")
+    private InventoryEntity itemId;
 }

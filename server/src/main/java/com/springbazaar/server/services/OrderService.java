@@ -1,7 +1,9 @@
 package com.springbazaar.server.services;
 
+import com.springbazaar.server.entities.InventoryEntity;
 import com.springbazaar.server.entities.OrdersEntity;
 import com.springbazaar.server.repository.OrderRepository;
+import com.springbazaar.server.requestresponse.OrderRequest;
 import com.springbazaar.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +28,18 @@ public class OrderService {
         String userId = claims.getSubject();
         return orderRepository.findByBuyerId(userId);
     }
-    public OrdersEntity createOrder(OrdersEntity ordersEntity,String jwtToken){
+    public OrdersEntity createOrder(OrderRequest orderRequest, String jwtToken){
         LocalDateTime orderDate = LocalDateTime.now();
         var claims = jwtUtil.getAllClaimsFromToken(jwtToken);
         String userId = claims.getSubject();
-        ordersEntity.setBuyerId(userId);
-        ordersEntity.setOrderDate(orderDate);
-        return orderRepository.save(ordersEntity);
+        OrdersEntity order = new OrdersEntity();
+        order.setBuyerId(userId);
+        order.setOrderDate(orderDate);
+        order.setDeliveryAddress(orderRequest.getDeliveryAddress());
+        order.setPinCode(orderRequest.getPinCode());
+        InventoryEntity item = new InventoryEntity();
+        item.setId(orderRequest.getItemId());
+        order.setItemId(item);
+        return orderRepository.save(order);
     }
 }

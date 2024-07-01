@@ -3,6 +3,7 @@ package com.springbazaar.server.controllers;
 import com.springbazaar.server.entities.OrdersEntity;
 import com.springbazaar.server.entities.UsersEntity;
 import com.springbazaar.server.repository.OrderRepository;
+import com.springbazaar.server.requestresponse.OrderRequest;
 import com.springbazaar.server.services.OrderService;
 import com.springbazaar.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class Order {
         return orderService.getAllBuyerOrders(jwtToken);
     }
     @PostMapping("/purchase")
-    public OrdersEntity createOrder(@RequestBody OrdersEntity ordersEntity,@CookieValue("Authorization") String jwtToken){
-        return orderService.createOrder(ordersEntity,jwtToken);
+    public OrdersEntity createOrder(@RequestBody OrderRequest orderRequest, @CookieValue("Authorization") String jwtToken){
+        return orderService.createOrder(orderRequest,jwtToken);
     }
 }

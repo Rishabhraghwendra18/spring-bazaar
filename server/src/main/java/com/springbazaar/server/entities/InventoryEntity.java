@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -32,4 +34,6 @@ public class InventoryEntity {
     private float itemPrice;
     @Column(name = "itemPhoto")
     private String itemPhoto;
+    @OneToMany(mappedBy = "itemId",cascade = {CascadeType.REMOVE})
+    private List<OrdersEntity> item;
 }
