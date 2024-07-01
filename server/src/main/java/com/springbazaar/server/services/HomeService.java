@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HomeService {
@@ -17,5 +18,9 @@ public class HomeService {
     }
     public List<InventoryEntity> getAllInventoryItems(){
         return inventoryRepository.findAll();
+    }
+    public InventoryEntity getItemById(Integer id){
+        Optional<InventoryEntity> item = inventoryRepository.findById(id);
+        return item.orElse(null);
     }
 }
