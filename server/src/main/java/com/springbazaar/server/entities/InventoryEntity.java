@@ -34,6 +34,7 @@ public class InventoryEntity {
     private float itemPrice;
     @Column(name = "itemPhoto")
     private String itemPhoto;
+    @JsonIgnore
     @OneToMany(mappedBy = "itemId",cascade = {CascadeType.REMOVE})
-    private List<OrdersEntity> item;
+    private List<OrdersEntity> orders;
 }

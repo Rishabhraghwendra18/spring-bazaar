@@ -1,9 +1,11 @@
 package com.springbazaar.server.services;
 
+import com.springbazaar.server.controllers.Order;
 import com.springbazaar.server.entities.InventoryEntity;
 import com.springbazaar.server.entities.OrdersEntity;
 import com.springbazaar.server.repository.OrderRepository;
 import com.springbazaar.server.requestresponse.OrderRequest;
+import com.springbazaar.server.requestresponse.OrderWithItemIdResponse;
 import com.springbazaar.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,5 +43,10 @@ public class OrderService {
         item.setId(orderRequest.getItemId());
         order.setItemId(item);
         return orderRepository.save(order);
+    }
+    public List<OrderWithItemIdResponse> getAllSellerOrders(String token){
+        var claims = jwtUtil.getAllClaimsFromToken(token);
+        String userId = claims.getSubject();
+        return orderRepository.findOrdersBySellerId(userId);
     }
 }
