@@ -25,10 +25,16 @@ public class InventoryService {
         return inventoryRepository.save(inventoryEntity);
     }
     public InventoryEntity updateProduct(InventoryEntity inventoryEntity){
-        if (inventoryEntity.getId() == null || inventoryEntity.getSellerId() == null){
+        if (inventoryEntity.getId() == null){
             return null;
         }
-        return inventoryRepository.save(inventoryEntity);
+        Optional<InventoryEntity> item = inventoryRepository.findById(inventoryEntity.getId());
+        if (item.isPresent()){
+            String sellerId = item.get().getSellerId();
+            inventoryEntity.setSellerId(sellerId);
+            return inventoryRepository.save(inventoryEntity);
+        }
+        return null;
     }
     public InventoryEntity removeProduct(Integer id){
         Optional<InventoryEntity> item = inventoryRepository.findById(id);

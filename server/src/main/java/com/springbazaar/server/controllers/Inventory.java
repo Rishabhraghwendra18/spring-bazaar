@@ -16,17 +16,17 @@ public class Inventory {
     public Inventory(InventoryService inventoryService) {
         this.inventoryService = inventoryService;
     }
-    @PostMapping("/addproduct")
+    @PostMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public InventoryEntity addProduct(@Valid @RequestBody InventoryEntity inventoryEntity, @CookieValue("Authorization") String jwtToken){
         return inventoryService.addProduct(inventoryEntity,jwtToken);
     }
-    @PutMapping("/updateproduct")
+    @PutMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public InventoryEntity updateProduct(@RequestBody InventoryEntity inventoryEntity){
         return inventoryService.updateProduct(inventoryEntity);
     }
-    @DeleteMapping("/removeproduct/{id}")
+    @DeleteMapping("/product/{id}")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public InventoryEntity removeProduct(@PathVariable Integer id){
         return inventoryService.removeProduct(id);
