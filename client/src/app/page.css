@@ -59,3 +59,83 @@
   flex-direction: row;
   gap: 0.9rem;
 }
+
+.brand-section {
+  background-color: black;
+  height: 122px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brands {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+}
+
+.brand {
+  /* width: 18%; */
+  height: auto;
+}
+.new-arrivals-section {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.new-arrivals-title {
+  font-family: 'Integral CF', sans-serif;
+  font-weight: bold;
+  font-size: 48px;
+  color: black;
+  margin-bottom: 40px;
+}
+
+.new-arrivals {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.product-card {
+  width: 295px;
+  text-align: center;
+}
+
+.product-image {
+  width: 295px;
+  height: 298px;
+  object-fit: cover;
+}
+
+.product-name {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: black;
+  margin-top: 10px;
+}
+
+.product-reviews {
+  color: black;
+  margin-top: 5px;
+}
+
+.product-price {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  color: black;
+  margin-top: 10px;
+}
+.gold-star {
+  color: gold;
+}
+.divider {
+  width: 1340px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+  margin: 50px auto;
+}
