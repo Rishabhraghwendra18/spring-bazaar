@@ -1,5 +1,5 @@
 .hero-section {
-  background: url('../assets/hero.png') no-repeat center center/cover;
+  background: url("../assets/hero.png") no-repeat center center/cover;
   height: 80vh;
   display: flex;
   align-items: center;
@@ -12,7 +12,7 @@
 }
 
 .hero-title {
-  font-family: 'Integral CF', sans-serif;
+  font-family: "Integral CF", sans-serif;
   font-weight: bold;
   font-size: 64px;
   color: black;
@@ -21,7 +21,7 @@
 }
 
 .hero-subtitle {
-  font-family: 'Satoshi', sans-serif;
+  font-family: "Satoshi", sans-serif;
   font-weight: 400;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.6);
@@ -34,7 +34,7 @@
   border-radius: 62px !important;
   padding: 10px 20px !important;
   text-transform: none !important;
-  font-family: 'Satoshi', sans-serif !important;
+  font-family: "Satoshi", sans-serif !important;
 }
 
 .hero-brands {
@@ -42,19 +42,19 @@
 }
 
 .brand-count {
-  font-family: 'Satoshi', sans-serif;
+  font-family: "Satoshi", sans-serif;
   font-weight: bold;
   font-size: 40px;
   color: black;
 }
 
 .brand-text {
-  font-family: 'Satoshi', sans-serif;
+  font-family: "Satoshi", sans-serif;
   font-weight: 400;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.6);
 }
-.brand-features{
+.brand-features {
   display: flex;
   flex-direction: row;
   gap: 0.9rem;
@@ -85,7 +85,7 @@
 }
 
 .new-arrivals-title {
-  font-family: 'Integral CF', sans-serif;
+  font-family: "Integral CF", sans-serif;
   font-weight: bold;
   font-size: 48px;
   color: black;
@@ -110,7 +110,7 @@
 }
 
 .product-name {
-  font-family: 'Satoshi', sans-serif;
+  font-family: "Satoshi", sans-serif;
   font-weight: 400;
   font-size: 20px;
   color: black;
@@ -123,7 +123,7 @@
 }
 
 .product-price {
-  font-family: 'Satoshi', sans-serif;
+  font-family: "Satoshi", sans-serif;
   font-weight: bold;
   font-size: 24px;
   color: black;
@@ -139,3 +139,135 @@
   border: none;
   margin: 50px auto;
 }
+.browse-by-style-section {
+  background-color: #f0f0f0;
+  width: 1239px;
+  /* height: 866px; */
+  margin: 0 auto;
+  padding: 50px 0;
+  text-align: center;
+  border-radius: 40px;
+}
+
+.section-title {
+  font-family: "Integral CF", sans-serif;
+  font-weight: bold;
+  font-size: 48px;
+  color: black;
+  margin-bottom: 40px;
+}
+
+.styles-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; 
+}
+
+.style-row {
+  display: flex;
+  gap: 20px; 
+}
+
+.style-card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+}
+
+.style-card .style-text {
+  font-family: "Satoshi", sans-serif;
+  font-weight: bold;
+  font-size: 36px;
+  color: black;
+  position: absolute;
+  top: 23px;
+  left: 23px;
+}
+
+.casual {
+  width: 407px;
+  height: 289px;
+  background-image: url("../assets/casual.png");
+}
+
+.formal {
+  width: 684px;
+  height: 289px;
+  background-image: url("../assets/formal.png");
+}
+
+.party {
+  width: 684px;
+  height: 289px;
+  background-image: url("../assets/party.png");
+}
+
+.gym {
+  width: 407px;
+  height: 289px;
+  background-image: url("../assets/gym.png");
+}
+
+.reviews-section {
+  /* width: 100%; */
+  padding: 50px;
+  text-align: left;
+}
+
+.reviews-title {
+  font-family: 'Integral CF', sans-serif;
+  font-weight: bold;
+  font-size: 48px;
+  color: black;
+  margin-bottom: 40px;
+}
+
+.reviews-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.review-card {
+  flex: 1;
+  /* width: 400px;
+  height: 240px; */
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: white; 
+}
+
+.review-stars {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.gold-star {
+  color: gold;
+}
+
+.review-name {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.review-text {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: regular;
+  font-size: 16px;
+  color: black;
+}
+
