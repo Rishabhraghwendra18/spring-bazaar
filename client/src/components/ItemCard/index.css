@@ -1,6 +1,7 @@
 .product-card {
   width: 295px;
   text-align: center;
+  cursor: pointer;
 }
 
 .product-image {

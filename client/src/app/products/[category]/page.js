@@ -2,6 +2,7 @@
 import React from 'react'
 import Card from '@/components/Card'
 import ItemCard from '@/components/ItemCard';
+import { useRouter } from 'next/navigation'
 import product1 from "../../../assets/Frame 32.png";
 import product2 from "../../../assets/Frame 33.png";
 import product3 from "../../../assets/Frame 34.png";
@@ -10,6 +11,8 @@ import CustomSlider from '@/components/CustomSlider';
 import "./page.css"
 import CustomButton from '@/components/CustomButton';
 function Category({params}) {
+  const router = useRouter();
+ 
   const products = [
     {
       id: 1,
@@ -46,7 +49,7 @@ function Category({params}) {
               <h2>{params.category}</h2>
               <div className='products'>
                 {products.map((product,index)=>(
-                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} />
+                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} onClick={()=>router.push(`/products/${params.category}/${product.id}`)}/>
                 ))}
               </div>
             </div>
