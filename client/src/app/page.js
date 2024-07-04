@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from 'next/link'
 import { Button } from "@mui/material";
 import calvinKleinLogo from "../assets/calvin-klein.png";
 import gucciLogo from "../assets/gucci-logo-1.png";
@@ -138,18 +139,18 @@ export default function Home() {
       <div className="styles-container">
         <div className="style-row">
           <div className="style-card casual">
-            <div className="style-text">Casual</div>
+            <div className="style-text"><Link href={"/products/Casual"} className="category-link">Casual</Link></div>
           </div>
           <div className="style-card formal">
-            <div className="style-text">Formal</div>
+            <div className="style-text"><Link href={"/products/Fromal"} className="category-link">Formal</Link></div>
           </div>
         </div>
         <div className="style-row">
           <div className="style-card party">
-            <div className="style-text">Party</div>
+            <div className="style-text"><Link href={"/products/Party"} className="category-link">Party</Link></div>
           </div>
           <div className="style-card gym">
-            <div className="style-text">Gym</div>
+            <div className="style-text"><Link href={"/products/Gym"} className="category-link">Gym</Link></div>
           </div>
         </div>
       </div>

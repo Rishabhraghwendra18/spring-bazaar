@@ -191,6 +191,11 @@
   top: 23px;
   left: 23px;
 }
+.category-link{
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
 
 .casual {
   width: 407px;
