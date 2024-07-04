@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Card from '@/components/Card'
 import ItemCard from '@/components/ItemCard';
@@ -5,7 +6,9 @@ import product1 from "../../../assets/Frame 32.png";
 import product2 from "../../../assets/Frame 33.png";
 import product3 from "../../../assets/Frame 34.png";
 import product4 from "../../../assets/Frame 38.png";
+import CustomSlider from '@/components/CustomSlider';
 import "./page.css"
+import CustomButton from '@/components/CustomButton';
 function Category({params}) {
   const products = [
     {
@@ -29,7 +32,15 @@ function Category({params}) {
     <div className='container'>
         <div className='contents-container'>
             <div className='filters'>
-              <Card>Filters</Card>
+              <Card className="filter-card-holder">
+                <h3>Filters</h3>
+                <hr className="divider" />
+                <div className='filter'>
+                <h4>Price</h4>
+                <CustomSlider/>
+                <CustomButton>Apply Filter</CustomButton>
+                </div>
+              </Card>
             </div>
             <div className='products-container'>
               <h2>{params.category}</h2>
