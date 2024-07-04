@@ -1,11 +1,12 @@
 import React from "react";
+import Link from "next/link";
 import "./index.css";
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="navbar-title">Spring Bazaar</div>
+      <div className="navbar-title"><Link href={"/"}>Spring Bazaar</Link></div>
       <ul className="navbar-links">
         <li>Shop</li>
         <li>On Sale</li>
