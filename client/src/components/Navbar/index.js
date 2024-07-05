@@ -15,7 +15,9 @@ function Navbar() {
       </ul>
       <input className="search-bar" type="text" placeholder="Search products" />
       <div className="navbar-icons">
+        <Link href={"/cart"}>
         <FaShoppingCart style={{fontSize:'20px'}}/>
+        </Link>
         <FaUser style={{fontSize:'20px'}}/>
       </div>
     </nav>
