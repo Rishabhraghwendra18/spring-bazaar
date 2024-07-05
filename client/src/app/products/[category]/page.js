@@ -10,6 +10,7 @@ import product4 from "../../../assets/Frame 38.png";
 import CustomSlider from '@/components/CustomSlider';
 import "./page.css"
 import CustomButton from '@/components/CustomButton';
+
 function Category({params}) {
   const router = useRouter();
  
@@ -49,7 +50,9 @@ function Category({params}) {
               <h2>{params.category}</h2>
               <div className='products'>
                 {products.map((product,index)=>(
-                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} onClick={()=>router.push(`/products/${params.category}/${product.id}`)}/>
+                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
+                    router.push(`/products/${params.category}/${product.id}`)
+                  }}/>
                 ))}
               </div>
             </div>

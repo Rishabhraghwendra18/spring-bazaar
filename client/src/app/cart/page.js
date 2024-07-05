@@ -1,5 +1,6 @@
 "use client"
 import React from 'react';
+import { useSelector } from 'react-redux';
 import "./page.css"
 import Card from '@/components/Card';
 import ItemCart from '@/components/ItemCart';
@@ -7,32 +8,34 @@ import productPhoto1 from "@/assets/complete-product-images/image 1.png";
 import CustomButton from '@/components/CustomButton';
 
 function Cart() {
-  const items = [
-    {
-      photo: productPhoto1,
-      name: 'Gradient Graphic T-shirt',
-      size: 'Large',
-      price: 120
-    },
-    {
-      photo: productPhoto1,
-      name: 'Gradient Graphic T-shirt',
-      size: 'Large',
-      price: 120
-    },
-    {
-      photo: productPhoto1,
-      name: 'Gradient Graphic T-shirt',
-      size: 'Large',
-      price: 120
-    },
-    {
-      photo: productPhoto1,
-      name: 'Gradient Graphic T-shirt',
-      size: 'Large',
-      price: 120
-    }
-  ];
+  const items = useSelector(state=>state.cart);
+  console.log("cartItems: ",items)
+  // const items = [
+  //   {
+  //     photo: productPhoto1,
+  //     name: 'Gradient Graphic T-shirt',
+  //     size: 'Large',
+  //     price: 120
+  //   },
+  //   {
+  //     photo: productPhoto1,
+  //     name: 'Gradient Graphic T-shirt',
+  //     size: 'Large',
+  //     price: 120
+  //   },
+  //   {
+  //     photo: productPhoto1,
+  //     name: 'Gradient Graphic T-shirt',
+  //     size: 'Large',
+  //     price: 120
+  //   },
+  //   {
+  //     photo: productPhoto1,
+  //     name: 'Gradient Graphic T-shirt',
+  //     size: 'Large',
+  //     price: 120
+  //   }
+  // ];
   return (
     <div className='cart-container'>
       <h2>YOUR CART</h2>

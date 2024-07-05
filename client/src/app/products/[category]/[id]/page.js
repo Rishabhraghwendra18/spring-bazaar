@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { Tabs, Tab, Button, Typography } from "@mui/material";
 import { FaStar } from "react-icons/fa";
@@ -9,11 +10,13 @@ import productPhoto3 from "@/assets/complete-product-images/image 3.png";
 import "./page.css";
 import CustomButton from "@/components/CustomButton";
 import Card from "@/components/Card";
+import { addItemToCart } from '@/lib/cartSlice';
 
 function Product() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedImage, setSelectedImage] = useState(productPhoto1);
   const [selectedSize, setSelectedSize] = useState("Medium");
+  const dispatch = useDispatch();
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -26,6 +29,15 @@ function Product() {
   const handleSizeClick = (size) => {
     setSelectedSize(size);
   };
+  const handleAddToCart = () =>{
+    dispatch(addItemToCart({
+      id: 1,
+      name: "T-Shirt With Tape Details",
+      photo: productPhoto1,
+      size:selectedSize,
+      price: "$100",
+    }))
+  }
   return (
     <div className="product-page">
       <div className="product-details">
@@ -83,7 +95,7 @@ function Product() {
             ))}
           </div>
           <hr className="divider" />
-          <CustomButton style={{maxWidth:600}}>Add to Cart</CustomButton>
+          <CustomButton style={{maxWidth:600}} onClick={handleAddToCart}>Add to Cart</CustomButton>
         </div>
       </div>
       <Tabs
