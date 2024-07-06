@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Modal, Box, Typography, TextField, Button, Link } from "@mui/material";
+import { Modal, Box, Typography, Alert, Snackbar, Link } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./index.css";
+import { createUser } from "@/services/user";
 import CustomButton from "../CustomButton";
 
 const style = {
@@ -19,13 +20,24 @@ const style = {
 
 function LoginSignUpModal({ open, handleClose }) {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [snackBarData, setSnackBarData] = useState({open:false,messageType:"",message:""});
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log("data is: ",data);
+  const onSubmit = async (data) => {
+    try {
+      let payload = {...data,role:"ROLE_BUYER"};
+      const response = await createUser(payload);
+      console.log("response data: ",response.data);
+      handleClose();
+    } catch (error) {
+      console.log("Error while creating user");
+      setSnackBarData({open:true,messageType:"error",message:"Unable to login"})
+    }
+  };
 
   return (
     <Modal
@@ -83,14 +95,14 @@ function LoginSignUpModal({ open, handleClose }) {
             />
           </div>
           <div className="input-container">
-            <label htmlFor="phoneNumber" className="input-label">
+            <label htmlFor="phoneNo" className="input-label">
               Phone Number *
             </label>
             <input
-              id="phoneNumber"
-              name="phoneNumber"
+              id="phoneNo"
+              name="phoneNo"
               type="number"
-              {...register("phoneNumber", { required: true })}
+              {...register("phoneNo", { required: true })}
               // value={formData.password}
               // onChange={handleChange}
               className="modal-input"
