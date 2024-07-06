@@ -9,6 +9,7 @@ function ItemCart({item}) {
   const dispatch = useDispatch();
   const handleRemoveItem = ()=>{
     dispatch(removeItemFromCart(item));
+    // console.log("deleted successfully")
   }
   return (
     <div className="item-card">

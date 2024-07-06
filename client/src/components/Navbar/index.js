@@ -1,9 +1,15 @@
-import React from "react";
+"use client"
+import {useState} from "react";
 import Link from "next/link";
 import "./index.css";
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import LoginSignUpModal from "../LoginSignUpModal";
 
 function Navbar() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () =>{
+    setModalOpen(!modalOpen);
+  }
   return (
     <nav className="navbar">
       <div className="navbar-title"><Link href={"/"}>Spring Bazaar</Link></div>
@@ -16,10 +22,11 @@ function Navbar() {
       <input className="search-bar" type="text" placeholder="Search products" />
       <div className="navbar-icons">
         <Link href={"/cart"}>
-        <FaShoppingCart style={{fontSize:'20px'}}/>
+        <FaShoppingCart style={{fontSize:'20px'}} />
         </Link>
-        <FaUser style={{fontSize:'20px'}}/>
+        <FaUser style={{fontSize:'20px'}} onClick={handleModalOpen}/>
       </div>
+      <LoginSignUpModal open={modalOpen} handleClose={handleModalOpen}/>
     </nav>
   );
 }
