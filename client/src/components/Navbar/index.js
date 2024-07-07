@@ -26,7 +26,7 @@ function Navbar() {
         </Link>
         <FaUser style={{fontSize:'20px'}} onClick={handleModalOpen}/>
       </div>
-      <LoginSignUpModal open={modalOpen} handleClose={handleModalOpen}/>
+      {modalOpen && <LoginSignUpModal open={modalOpen} handleClose={handleModalOpen}/>}
     </nav>
   );
 }

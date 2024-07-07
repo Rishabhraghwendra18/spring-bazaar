@@ -36,8 +36,9 @@ function LoginSignUpModal({ open, handleClose }) {
       console.log("response data: ",response.data);
       handleClose();
     } catch (error) {
-      console.log("Error while creating user");
-      setSnackBarData({open:true,messageType:"error",message:"Unable to login"})
+      let errorMessage = error.response?.data?.message
+      console.log("Error while creating user",errorMessage);
+      setSnackBarData({open:true,messageType:"error",message:errorMessage})
     }
   };
   const onLogIn = async (data) => {
@@ -187,6 +188,7 @@ function LoginSignUpModal({ open, handleClose }) {
             </Typography>
           </form>
         )}
+        {snackBarData?.open && <span className={`snackbar-message ${snackBarData?.messageType == "error"?"snackbar-message-red":"snackbar-message-green"}`}>{snackBarData?.message}</span>}
       </Box>
     </Modal>
   );

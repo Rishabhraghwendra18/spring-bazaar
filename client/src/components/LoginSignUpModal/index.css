@@ -76,3 +76,16 @@
   font-size: 16px;
   color: black;
 }
+
+.snackbar-message-red{
+  color: red;
+}
+.snackbar-message-green{
+  color: green;
+}
+.snackbar-message{
+  text-align: center;
+  font-size: 16px;
+  width: 100%;
+  display: block;
+}
