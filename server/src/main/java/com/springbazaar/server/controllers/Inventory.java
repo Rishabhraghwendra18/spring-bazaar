@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/inventory")
@@ -18,8 +19,13 @@ public class Inventory {
     }
     @PostMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public InventoryEntity addProduct(@Valid @RequestBody InventoryEntity inventoryEntity, @CookieValue("Authorization") String jwtToken){
-        return inventoryService.addProduct(inventoryEntity,jwtToken);
+    public InventoryEntity addProduct(@RequestParam("file") MultipartFile file, @RequestParam("itemQuantity") int itemQuantity,@RequestParam("itemTitle") String itemTitle,@RequestParam("itemDescription") String itemDescription,@RequestParam("itemPrice") float itemPrice, @CookieValue("Authorization") String jwtToken){
+        InventoryEntity inventoryEntity = new InventoryEntity();
+        inventoryEntity.setItemQuantity(itemQuantity);
+        inventoryEntity.setItemTitle(itemTitle);
+        inventoryEntity.setItemDescription(itemDescription);
+        inventoryEntity.setItemPrice(itemPrice);
+        return inventoryService.addProduct(file,inventoryEntity,jwtToken);
     }
     @PutMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")
