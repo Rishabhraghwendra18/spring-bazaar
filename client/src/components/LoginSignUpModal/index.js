@@ -1,15 +1,17 @@
+"use client"
 import { useState } from "react";
+import { setCookie } from 'cookies-next';
 import { Modal, Box, Typography, Alert, Snackbar, Link } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./index.css";
-import { createUser } from "@/services/user";
+import { createUser,loginUser } from "@/services/user";
 import CustomButton from "../CustomButton";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
+  transform: "translate(-50%, -50%)", 
   width: 400,
   bgcolor: "background.paper",
   //   border: "2px solid #000",
@@ -27,7 +29,7 @@ function LoginSignUpModal({ open, handleClose }) {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = async (data) => {
+  const onSignUp = async (data) => {
     try {
       let payload = {...data,role:"ROLE_BUYER"};
       const response = await createUser(payload);
@@ -35,6 +37,25 @@ function LoginSignUpModal({ open, handleClose }) {
       handleClose();
     } catch (error) {
       console.log("Error while creating user");
+      setSnackBarData({open:true,messageType:"error",message:"Unable to login"})
+    }
+  };
+  const onLogIn = async (data) => {
+    try {
+      let payload = {...data};
+      const response = await loginUser(payload);
+      const jwtToken = response.data?.token;
+      const expirationTime = response.data?.expirationDate;
+      if(jwtToken !=null){
+        setCookie("Authorization",`Bearer ${jwtToken}`,{expires: new Date(expirationTime)})
+        console.log("response data: ",jwtToken);
+        handleClose();
+      }
+      else{
+        throw new Error("JWT token not present in response");
+      }
+    } catch (error) {
+      console.log("Error while creating user",error);
       setSnackBarData({open:true,messageType:"error",message:"Unable to login"})
     }
   };
@@ -51,7 +72,7 @@ function LoginSignUpModal({ open, handleClose }) {
           {isSignUp ? "Sign Up" : "Login"}
         </Typography>
         {isSignUp ? (
-          <form onSubmit={handleSubmit(onSubmit)} className="modal-form">
+          <form onSubmit={handleSubmit(onSignUp)} className="modal-form">
             <div className="input-container">
             <label htmlFor="name" className="input-label">
               Name
@@ -109,7 +130,7 @@ function LoginSignUpModal({ open, handleClose }) {
               required
             />
           </div>
-          <CustomButton type={"submit"}>Log In</CustomButton>
+          <CustomButton type={"submit"}>Sign Up</CustomButton>
           <Typography className="modal-switch-text">
             Already have an account? {" "}
             <Link
@@ -122,7 +143,7 @@ function LoginSignUpModal({ open, handleClose }) {
           </Typography>
         </form>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="modal-form">
+          <form onSubmit={handleSubmit(onLogIn)} className="modal-form">
             <div className="input-container">
               <label htmlFor="email" className="input-label">
                 Email *
