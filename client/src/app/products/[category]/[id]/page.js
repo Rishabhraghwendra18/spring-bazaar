@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { Tabs, Tab, Button, Typography } from "@mui/material";
@@ -11,12 +11,28 @@ import "./page.css";
 import CustomButton from "@/components/CustomButton";
 import Card from "@/components/Card";
 import { addItemToCart } from '@/lib/cartSlice';
+import { getProductById } from "@/services/home";
 
-function Product() {
+function Product({params}) {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedImage, setSelectedImage] = useState(productPhoto1);
   const [selectedSize, setSelectedSize] = useState("Medium");
+  const [productDetails, setProductDetails] = useState({});
   const dispatch = useDispatch();
+
+  const fetchProductById = async()=>{
+    try {
+      const response = await getProductById(params.id);
+      setProductDetails(response?.data);
+      setSelectedImage(`/images/${response?.data?.fileName}`)
+    } catch (error) {
+      console.log("Error while fetching product by id: ",error);
+    }
+  }
+  useEffect(() => {
+    fetchProductById();
+  }, [])
+  
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -30,13 +46,7 @@ function Product() {
     setSelectedSize(size);
   };
   const handleAddToCart = () =>{
-    dispatch(addItemToCart({
-      id: 1,
-      name: "T-Shirt With Tape Details",
-      photo: productPhoto1,
-      size:selectedSize,
-      price: "$100",
-    }))
+    dispatch(addItemToCart(productDetails))
   }
   return (
     <div className="product-page">
@@ -44,29 +54,30 @@ function Product() {
         <div className="product-images">
           <div
             className="small-image"
-            onClick={() => handleImageClick(productPhoto1)}
+            onClick={() => {}}
           >
-            <Image src={productPhoto1} alt="Product" />
+            <Image src={selectedImage} alt="Product" width={152} height={167}/>
           </div>
           <div
             className="small-image"
-            onClick={() => handleImageClick(productPhoto2)}
+            onClick={() => {}}
           >
-            <Image src={productPhoto2} alt="Product" />
+            <Image src={selectedImage} alt="Product" width={152} height={167}/>
           </div>
           <div
             className="small-image"
-            onClick={() => handleImageClick(productPhoto3)}
+            // onClick={() => handleImageClick(productPhoto3)}
+            onClick={() =>{}}
           >
-            <Image src={productPhoto3} alt="Product" />
+            <Image src={selectedImage} alt="Product" width={152} height={167}/>
           </div>
         </div>
         <div className="large-image">
-          <Image src={selectedImage} alt="Selected Product" />
+          <Image src={selectedImage} alt="Selected Product" width={100} height={100}/>
         </div>
         <div className="product-info">
           <Typography variant="h4" className="product-title">
-            One Life Graphic T-shirt
+            {productDetails?.itemTitle}
           </Typography>
           <div className="product-rating">
             <FaStar className="gold-star" />
@@ -75,9 +86,9 @@ function Product() {
             <FaStar className="gold-star" />
             <FaStar className="gold-star" />
           </div>
-          <Typography className="product-price">$320</Typography>
+          <Typography className="product-price">Rs {productDetails.itemPrice}</Typography>
           <Typography className="product-meta">
-            Short meta description about the product.
+            {productDetails?.itemDescription}
           </Typography>
           <hr className="divider" />
           <Typography className="choose-size">Choose Size</Typography>
@@ -112,7 +123,7 @@ function Product() {
         <Tab label="Rating & Reviews" />
       </Tabs>
       <div className="tab-content">
-        {selectedTab === 0 && <div className="tabs-container">Product Details Content</div>}
+        {selectedTab === 0 && <div className="tabs-container">{productDetails?.itemDescription}</div>}
         {selectedTab === 1 && (
           <div className="reviews-container tabs-container">
             <Card>

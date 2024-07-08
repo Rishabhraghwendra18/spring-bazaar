@@ -23,6 +23,7 @@ function Category({params}) {
         id:product.id,
         name:product.itemTitle,
         image:product.itemPhoto,
+        fileName:product.fileName,
         price: product.itemPrice
       }));
       setProducts(products);
@@ -71,7 +72,7 @@ function Category({params}) {
               <h2>{params.category}</h2>
               <div className='products'>
                 {products.map((product,index)=>(
-                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
+                  <ItemCard image={product.fileName} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
                     router.push(`/products/${params.category}/${product.id}`)
                   }}/>
                 ))}

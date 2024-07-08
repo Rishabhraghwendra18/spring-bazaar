@@ -14,14 +14,14 @@ function ItemCart({item}) {
   return (
     <div className="item-card">
       <div className="item-photo">
-        <Image src={item.photo} alt={item.name} />
+        <Image src={`/images/${item?.fileName}`} alt={item.itemTitle} width={100} height={100}/>
       </div>
       <div className="item-details">
-        <div className="item-name">{item.name}</div>
+        <div className="item-name">{item.itemTitle}</div>
         <div className="item-size">
           Size: <span className="item-size-value">{item.size}</span>
         </div>
-        <div className="item-price">${item.price}</div>
+        <div className="item-price">Rs {item.itemPrice}</div>
       </div>
       <div className="item-delete">
         <FaTrashAlt className="delete-icon" onClick={handleRemoveItem}/>

@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import {useState,useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import "./page.css"
 import Card from '@/components/Card';
@@ -9,7 +9,30 @@ import CustomButton from '@/components/CustomButton';
 
 function Cart() {
   const items = useSelector(state=>state.cart);
+  const [totalCartCost, setTotalCartCost] = useState(0);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+
+  const calculateTotalCartCostBeforeCharges = ()=>{
+    if(items?.length != 0){
+      const totalCost = items?.reduce((acc,currentItem)=>acc+currentItem?.itemPrice,0);
+      setTotalCartCost(totalCost);
+    }
+  }
+  const calculateDiscount = (discount) =>{
+    return (totalCartCost * discount)/100;
+  }
+  const calculatePriceAfterDiscount = (discount) =>{
+    console.log("type: ",typeof calculateDiscount())
+    return totalCartCost - calculateDiscount(discount);
+  }
+  const totalCartCostAfterCharges = (discount,charges)=>{
+    return calculatePriceAfterDiscount(discount)+charges;
+  }
   console.log("cartItems: ",items)
+  useEffect(() => {
+    calculateTotalCartCostBeforeCharges()
+  }, [items])
+  
   // const items = [
   //   {
   //     photo: productPhoto1,
@@ -58,11 +81,11 @@ function Cart() {
           <div className='order-summary-container'>
             <div className='order-summary'>
               <span className='title-summary'>Subtotal</span>
-              <span className='summary-value'>$565</span>
+              <span className='summary-value'>Rs {totalCartCost}</span>
             </div>
             <div className='order-summary'>
               <span className='title-summary'>Discount(-20%)</span>
-              <span className='summary-value' style={{color:"#FF3333"}}>-$113</span>
+              <span className='summary-value' style={{color:"#FF3333"}}>-Rs {calculateDiscount(20)}</span>
             </div>
             <div className='order-summary'>
               <span className='title-summary'>Delivery Fee</span>
@@ -71,7 +94,7 @@ function Cart() {
             <hr className="divider" />
             <div className='order-summary'>
               <span className='total-title-summary'>Total</span>
-              <span className='total-summary-value'>$15</span>
+              <span className='total-summary-value'>Rs {totalCartCostAfterCharges(20,15)}</span>
             </div>
           </div>
           <CustomButton>Go To Checkout</CustomButton>
