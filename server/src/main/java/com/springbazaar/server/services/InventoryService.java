@@ -36,12 +36,15 @@ public class InventoryService {
             filePath=uploadFile(sellerId,file);
         }
         catch(Exception e){
+            System.out.println("error in catch: "+e.toString());
 //            return new ResponseEntity<>(new CommonResponse("Error while saving the file: "+e.getMessage(),true,HttpStatus.INTERNAL_SERVER_ERROR.value()),HttpStatus.INTERNAL_SERVER_ERROR);
             return null;
 
         }
         inventoryEntity.setSellerId(sellerId);
         inventoryEntity.setItemPhoto(filePath);
+        inventoryEntity.setFileName(fileName);
+        System.out.println("made the entity: "+inventoryEntity.toString());
         return inventoryRepository.save(inventoryEntity);
     }
     public InventoryEntity updateProduct(InventoryEntity inventoryEntity){

@@ -34,6 +34,10 @@ public class InventoryEntity {
     private float itemPrice;
     @Column(name = "itemPhoto")
     private String itemPhoto;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "file_name")
+    private String fileName;
+
     @JsonIgnore
     @OneToMany(mappedBy = "itemId",cascade = {CascadeType.REMOVE})
     private List<OrdersEntity> orders;
