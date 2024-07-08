@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import {useState,useEffect} from 'react'
 import Card from '@/components/Card'
 import ItemCard from '@/components/ItemCard';
 import { useRouter } from 'next/navigation'
@@ -10,27 +10,48 @@ import product4 from "../../../assets/Frame 38.png";
 import CustomSlider from '@/components/CustomSlider';
 import "./page.css"
 import CustomButton from '@/components/CustomButton';
+import { getAllProducts } from '@/services/home';
 
 function Category({params}) {
   const router = useRouter();
+  const [products, setProducts] = useState([]);
+  const fetchProducts = async ()=>{
+    try {
+      const response = await getAllProducts();
+      const {data} = response;
+      let products = data?.map(product=>({
+        id:product.id,
+        name:product.itemTitle,
+        image:product.itemPhoto,
+        price: product.itemPrice
+      }));
+      setProducts(products);
+    } catch (error) {
+      console.log("error while fetching products: ",error)
+    }
+  }
+  useEffect(() => {
+    fetchProducts();
+  }, [])
+  
  
-  const products = [
-    {
-      id: 1,
-      name: "T-Shirt With Tape Details",
-      image: product1,
-      price: "$100",
-    },
-    { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
-    { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
-    { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
-    { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
-    { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
-    { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
-    { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
-    { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
-    { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
-  ];
+  // const products = [
+  //   {
+  //     id: 1,
+  //     name: "T-Shirt With Tape Details",
+  //     image: product1,
+  //     price: "$100",
+  //   },
+  //   { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
+  //   { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
+  //   { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
+  //   { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
+  //   { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
+  //   { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
+  //   { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
+  //   { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
+  //   { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
+  // ];
 
   return (
     <div className='container'>

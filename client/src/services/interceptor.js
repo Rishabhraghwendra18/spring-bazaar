@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "cookies-next";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_PORT,
@@ -13,9 +14,11 @@ apiClient.interceptors.request.use(
     if(config.skipInterceptor){
         return config;
     }
-    const token = localStorage.getItem("authToken");
+
+    const token = getCookie("Authorization");
+    console.log("token is: ",token);
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = token;
     }
     return config;
   },
