@@ -31,7 +31,7 @@ function LoginSignUpModal({ open, handleClose }) {
   } = useForm();
   const onSignUp = async (data) => {
     try {
-      let payload = {...data,role:"ROLE_BUYER"};
+      let payload = {...data,role:"ROLE_SELLER"};
       const response = await createUser(payload);
       console.log("response data: ",response.data);
       handleClose();
