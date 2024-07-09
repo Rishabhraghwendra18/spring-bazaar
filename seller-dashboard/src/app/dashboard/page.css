@@ -1,13 +1,51 @@
-.dashbaord-container{
-    height: 95vh;
-    padding: 50px 100px;
-    display: grid;
-    grid-template-columns: 0.2fr 1fr;
+.dashbaord-container {
+  height: 95vh;
+  padding: 50px 100px;
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
 }
-.side-bar{
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
+.side-bar {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
 }
-.order-management-container{
-    padding: 30px;
+.order-management-container {
+  padding: 30px;
+}
+.side-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 2rem;
+  padding: 15px;
+}
+.side-bar-options-container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+}
+.side-bar-option {
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+.side-bar-option:hover, .selected-option{
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+/* background-color: rgba(0, 0, 0, 0.1);
+border-radius: 12px;
+color: black; */
+
+.divider {
+  /* width: 1340px; */
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+  /* margin: 50px auto; */
 }
