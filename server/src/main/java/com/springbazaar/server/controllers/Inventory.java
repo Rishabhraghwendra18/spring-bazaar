@@ -19,8 +19,7 @@ public class Inventory {
     }
     @PostMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public InventoryEntity addProduct(@RequestParam("file") MultipartFile file, @RequestParam("itemQuantity") int itemQuantity,@RequestParam("itemTitle") String itemTitle,@RequestParam("itemDescription") String itemDescription,@RequestParam("itemPrice") float itemPrice, @CookieValue("Authorization") String jwtToken){
-        System.out.println("controller add product");
+    public InventoryEntity addProduct(@RequestParam("file") MultipartFile file, @RequestParam("itemQuantity") int itemQuantity,@RequestParam("itemTitle") String itemTitle,@RequestParam("itemDescription") String itemDescription,@RequestParam("itemPrice") float itemPrice, @RequestHeader("Authorization") String jwtToken){
         InventoryEntity inventoryEntity = new InventoryEntity();
         inventoryEntity.setItemQuantity(itemQuantity);
         inventoryEntity.setItemTitle(itemTitle);

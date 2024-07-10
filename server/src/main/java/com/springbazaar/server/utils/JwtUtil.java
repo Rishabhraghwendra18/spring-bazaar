@@ -56,6 +56,7 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
     public String getSubjectFromToken(String token){
+        token=getTokenFromRequest(token);
         var claims = getAllClaimsFromToken(token);
         return claims.getSubject();
     }

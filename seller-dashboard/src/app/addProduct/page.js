@@ -3,10 +3,12 @@ import {useState} from "react";
 import { useForm,useFormContext,FormProvider } from "react-hook-form";
 import { FaTrashAlt } from 'react-icons/fa';
 import { FaPlus } from "react-icons/fa6";
+import { addProductInInventory } from "@/services/inventory";
 import "./page.css";
 
 function ProductDetails({ params }) {
   const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   // const { setValue, trigger } = useFormContext();
   const methods = useForm();
   const {
@@ -16,8 +18,20 @@ function ProductDetails({ params }) {
     setValue, trigger
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    console.log("form data ",data);
+    const formData = new FormData();
+    formData.append('file',file);
+    formData.append('itemTitle',data?.title)
+    formData.append('itemQuantity',data?.quantity)
+    formData.append('itemDescription',data?.description)
+    formData.append("itemPrice",data?.price);
+    try {
+      const response = await addProductInInventory(formData);
+      console.log("response: ",response.data);
+    } catch (error) {
+      console.log("Error while adding product to inventory: ",error);
+    }
   };
 
   const handleImageUpload = (event) => {
@@ -26,6 +40,7 @@ function ProductDetails({ params }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
+        setFile(file);
         setValue("image", file); 
         trigger("image"); 
       };
