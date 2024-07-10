@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import { useState, useEffect } from "react";
 import {
   Button,
   Table,
@@ -10,10 +11,12 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import { useRouter } from 'next/navigation'
+import { styled } from "@mui/material/styles";
+import { useRouter } from "next/navigation";
 import { FaPlus } from "react-icons/fa6";
+import { getSellerAllProducts } from "@/services/inventory";
 import "./index.css";
+import Image from "next/image";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,57 +37,79 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-function createData(id,name, calories, fat, carbs, protein) {
-  return { id,name, calories, fat, carbs, protein };
+function createData(id, name, calories, fat, carbs, protein) {
+  return { id, name, calories, fat, carbs, protein };
 }
 
 const rows = [
-  createData(1,"Frozen yoghurt", 159, 6.0),
-  createData(2,"Ice cream sandwich", 237, 9.0),
-  createData(3,"Eclair", 262, 16.0),
-  createData(4,"Cupcake", 305, 3.7),
-  createData(5,"Gingerbread", 356, 16.0),
+  createData(1, "Frozen yoghurt", 159, 6.0),
+  createData(2, "Ice cream sandwich", 237, 9.0),
+  createData(3, "Eclair", 262, 16.0),
+  createData(4, "Cupcake", 305, 3.7),
+  createData(5, "Gingerbread", 356, 16.0),
 ];
 function Inventory() {
-    const router = useRouter();
+  const router = useRouter();
+  const [productsList, setProductsList] = useState([]);
+  const getSellerProducts = async () => {
+    try {
+      const response = await getSellerAllProducts();
+      const { data } = response;
+      setProductsList(data);
+    } catch (error) {
+      console.log("error while getting seller all products: ", error);
+    }
+  };
+  useEffect(()=>{
+    getSellerProducts();
+  },[])
   return (
     <div className="inventory-container">
       <h1 className="section-title">Inventory</h1>
       <div className="add-product-container">
-        <Button variant="contained" color="success" startIcon={<FaPlus />} onClick={()=>router.push(`/addProduct`)}>
+        <Button
+          variant="contained"
+          color="success"
+          startIcon={<FaPlus />}
+          onClick={() => router.push(`/addProduct`)}
+        >
           Add product
         </Button>
       </div>
       <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-          <StyledTableCell>Product Image</StyledTableCell>
-            <StyledTableCell>Title</StyledTableCell>
-            <StyledTableCell>Description</StyledTableCell>
-            <StyledTableCell align="right">Quantity</StyledTableCell>
-            <StyledTableCell align="right">Price</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name} onClick={()=>router.push(`/dashboard/${row.id}`)} style={{cursor:'pointer'}}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Product Image</StyledTableCell>
+              <StyledTableCell>Title</StyledTableCell>
+              <StyledTableCell>Description</StyledTableCell>
+              <StyledTableCell align="right">Quantity</StyledTableCell>
+              <StyledTableCell align="right">Price</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {productsList.map((product) => (
+              <StyledTableRow
+                key={product.itemTitle}
+                onClick={() => router.push(`/dashboard/${product.id}`)}
+                style={{ cursor: "pointer" }}
+              >
                 <StyledTableCell component="th" scope="row">
-                Image here
-              </StyledTableCell>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell component="th" scope="row">
-                Description Here
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">Rs {row.fat}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                <Image src={`/product.fileName`} alt={product.itemTitle} className="table-image" width={100} height={100}/>
+                </StyledTableCell>
+                <StyledTableCell component="th" scope="row">
+                  {product.itemTitle}
+                </StyledTableCell>
+                <StyledTableCell component="th" scope="row">
+                {product.itemDescription}
+                </StyledTableCell>
+                <StyledTableCell align="right">{product.itemQuantity}</StyledTableCell>
+                <StyledTableCell align="right">Rs {product.itemPrice}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }

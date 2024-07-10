@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,10 @@ public class InventoryService {
     public InventoryService(InventoryRepository inventoryRepository, JwtUtil jwtUtil) {
         this.inventoryRepository = inventoryRepository;
         this.jwtUtil=jwtUtil;
+    }
+    public List<InventoryEntity> getAllSellerProducts(String jwtToken){
+        String sellerId=jwtUtil.getSubjectFromToken(jwtToken);
+        return inventoryRepository.findAllBySellerId(sellerId);
     }
     public InventoryEntity addProduct(MultipartFile file, InventoryEntity inventoryEntity, String jwtToken){
         String sellerId=jwtUtil.getSubjectFromToken(jwtToken);

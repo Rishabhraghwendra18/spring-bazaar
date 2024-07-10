@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/inventory")
 public class Inventory {
@@ -16,6 +18,11 @@ public class Inventory {
     @Autowired
     public Inventory(InventoryService inventoryService) {
         this.inventoryService = inventoryService;
+    }
+    @GetMapping("/product")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public List<InventoryEntity> getSellerAllProducts(@RequestHeader("Authorization") String jwtToken){
+        return inventoryService.getAllSellerProducts(jwtToken);
     }
     @PostMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")

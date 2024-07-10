@@ -7,5 +7,8 @@ async function addProductInInventory(payload) {
         }
     },{withCredentials:true});
 }
+async function getSellerAllProducts() {
+    return await apiClient.get("/inventory/product");
+}
 
-export {addProductInInventory}
+export {getSellerAllProducts,addProductInInventory}
