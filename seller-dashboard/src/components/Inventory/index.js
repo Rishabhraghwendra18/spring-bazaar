@@ -51,7 +51,7 @@ function Inventory() {
     <div className="inventory-container">
       <h1 className="section-title">Inventory</h1>
       <div className="add-product-container">
-        <Button variant="contained" color="success" startIcon={<FaPlus />}>
+        <Button variant="contained" color="success" startIcon={<FaPlus />} onClick={()=>router.push(`/addProduct`)}>
           Add product
         </Button>
       </div>
