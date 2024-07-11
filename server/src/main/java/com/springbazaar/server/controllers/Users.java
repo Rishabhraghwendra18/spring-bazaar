@@ -1,6 +1,7 @@
 package com.springbazaar.server.controllers;
 
 import com.springbazaar.server.entities.UsersEntity;
+import com.springbazaar.server.exceptionHandlers.ApplicationException;
 import com.springbazaar.server.requestresponse.JwtResponse;
 import com.springbazaar.server.requestresponse.LoginRequest;
 import com.springbazaar.server.services.UserService;
@@ -27,17 +28,13 @@ public class Users {
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse clientResponse){
         var jwtToken = userService.login(loginRequest);
-        if (jwtToken != null){
-            Cookie cookie = new Cookie("Authorization",jwtToken);
-            cookie.setPath("/");
-            cookie.setDomain("localhost");
-            cookie.setSecure(false);
-            clientResponse.addCookie(cookie);
-            JwtResponse jwtResponse = new JwtResponse(jwtToken,loginRequest.getEmail(),"Login successfull",false,jwtUtil.getExpirationDateFromToken(jwtToken));
-            return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
-        }
-        JwtResponse jwtResponse = new JwtResponse(null,loginRequest.getEmail(),"Error while loggin in",true,null);
-        return new ResponseEntity<>(jwtResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+        Cookie cookie = new Cookie("Authorization",jwtToken);
+        cookie.setPath("/");
+        cookie.setDomain("localhost");
+        cookie.setSecure(false);
+        clientResponse.addCookie(cookie);
+        JwtResponse jwtResponse = new JwtResponse(jwtToken,loginRequest.getEmail(),"Login successfull",false,jwtUtil.getExpirationDateFromToken(jwtToken));
+        return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
     }
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid @RequestBody UsersEntity user){

@@ -1,11 +1,15 @@
 package com.springbazaar.server.services;
 
 import com.springbazaar.server.entities.InventoryEntity;
+import com.springbazaar.server.exceptionHandlers.ApplicationException;
 import com.springbazaar.server.repository.InventoryRepository;
 import com.springbazaar.server.utils.JwtUtil;
+import io.jsonwebtoken.JwtException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,8 +34,12 @@ public class InventoryService {
         this.jwtUtil=jwtUtil;
     }
     public List<InventoryEntity> getAllSellerProducts(String jwtToken){
-        String sellerId=jwtUtil.getSubjectFromToken(jwtToken);
-        return inventoryRepository.findAllBySellerId(sellerId);
+        try{
+            String sellerId=jwtUtil.getSubjectFromToken(jwtToken);
+            return inventoryRepository.findAllBySellerId(sellerId);
+        }catch(DataAccessException e){
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage());
+        }
     }
     public InventoryEntity addProduct(MultipartFile file, InventoryEntity inventoryEntity, String jwtToken){
         String sellerId=jwtUtil.getSubjectFromToken(jwtToken);
@@ -43,8 +51,7 @@ public class InventoryService {
         catch(Exception e){
             System.out.println("error in catch: "+e.toString());
 //            return new ResponseEntity<>(new CommonResponse("Error while saving the file: "+e.getMessage(),true,HttpStatus.INTERNAL_SERVER_ERROR.value()),HttpStatus.INTERNAL_SERVER_ERROR);
-            return null;
-
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
         inventoryEntity.setSellerId(sellerId);
         inventoryEntity.setItemPhoto(filePath);
@@ -54,7 +61,7 @@ public class InventoryService {
     }
     public InventoryEntity updateProduct(InventoryEntity inventoryEntity){
         if (inventoryEntity.getId() == null){
-            return null;
+            throw new ApplicationException(HttpStatus.BAD_REQUEST.value(), "Product Id can't be null");
         }
         Optional<InventoryEntity> item = inventoryRepository.findById(inventoryEntity.getId());
         if (item.isPresent()){
@@ -62,7 +69,9 @@ public class InventoryService {
             inventoryEntity.setSellerId(sellerId);
             return inventoryRepository.save(inventoryEntity);
         }
-        return null;
+        else{
+            throw new ApplicationException(HttpStatus.NOT_FOUND.value(), "No such product found");
+        }
     }
     public InventoryEntity removeProduct(Integer id){
         Optional<InventoryEntity> item = inventoryRepository.findById(id);

@@ -1,10 +1,13 @@
 package com.springbazaar.server.utils;
 import com.springbazaar.server.entities.UsersEntity;
+import com.springbazaar.server.exceptionHandlers.ApplicationException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.apache.catalina.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -56,9 +59,14 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
     public String getSubjectFromToken(String token){
-        token=getTokenFromRequest(token);
-        var claims = getAllClaimsFromToken(token);
-        return claims.getSubject();
+        try{
+            token=getTokenFromRequest(token);
+            var claims = getAllClaimsFromToken(token);
+            return claims.getSubject();
+        }
+        catch (JwtException e){
+            throw new ApplicationException(HttpStatus.UNAUTHORIZED.value(),e.getMessage());
+        }
     }
     //validate token
     public Boolean validateToken(String token) {

@@ -1,12 +1,14 @@
 package com.springbazaar.server.services;
 
 import com.springbazaar.server.entities.UsersEntity;
+import com.springbazaar.server.exceptionHandlers.ApplicationException;
 import com.springbazaar.server.repository.UserRepository;
 import com.springbazaar.server.requestresponse.LoginRequest;
 import com.springbazaar.server.utils.JwtUtil;
 import com.springbazaar.server.utils.UserRole;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,17 +23,15 @@ public class UserService {
     }
     public UsersEntity createUser(UsersEntity usersEntity){
         var user = userRepository.findById(usersEntity.getEmail());
-        if(user.isEmpty()){
-            var res=userRepository.save(usersEntity);
-            return res;
-        }
-        return null;
+        return user.orElseThrow(()-> new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Not able to create user"));
     }
     public String login(LoginRequest request){
         var user = userRepository.findById(request.getEmail());
         if (user.isPresent()){
             return jwtUtil.generateToken(user.get());
         }
-        return null;
+        else{
+            throw new ApplicationException(HttpStatus.NOT_FOUND.value(), "User not found");
+        }
     }
 }
