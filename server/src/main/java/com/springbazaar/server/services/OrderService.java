@@ -30,8 +30,7 @@ public class OrderService {
         this.jwtUtil=jwtUtil;
     }
     public List<OrdersEntity> getAllBuyerOrders (String jwtToken){
-        var claims = jwtUtil.getAllClaimsFromToken(jwtToken);
-        String userId = claims.getSubject();
+        String userId = jwtUtil.getSubjectFromToken(jwtToken);
         return orderRepository.findByBuyerId(userId);
     }
     public OrdersEntity createOrder(OrderRequest orderRequest, String jwtToken){
@@ -44,8 +43,7 @@ public class OrderService {
         }
 
         LocalDateTime orderDate = LocalDateTime.now();
-        var claims = jwtUtil.getAllClaimsFromToken(jwtToken);
-        String userId = claims.getSubject();
+        String userId = jwtUtil.getSubjectFromToken(jwtToken);
         OrdersEntity order = new OrdersEntity();
         order.setBuyerId(userId);
         order.setOrderDate(orderDate);
@@ -58,8 +56,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
     public List<OrderWithItemIdResponse> getAllSellerOrders(String token){
-        var claims = jwtUtil.getAllClaimsFromToken(token);
-        String userId = claims.getSubject();
+        String userId = jwtUtil.getSubjectFromToken(token);
         return orderRepository.findOrdersBySellerId(userId);
     }
 }

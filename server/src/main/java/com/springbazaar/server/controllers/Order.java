@@ -32,16 +32,16 @@ public class Order {
 
     @GetMapping("/buyerOrders")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public List<OrdersEntity> getAllBuyerOrders(@CookieValue("Authorization") String jwtToken){
+    public List<OrdersEntity> getAllBuyerOrders(@RequestHeader("Authorization") String jwtToken){
         return orderService.getAllBuyerOrders(jwtToken);
     }
     @PostMapping("/purchase")
-    public OrdersEntity createOrder(@RequestBody OrderRequest orderRequest, @CookieValue("Authorization") String jwtToken){
+    public OrdersEntity createOrder(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwtToken){
         return orderService.createOrder(orderRequest,jwtToken);
     }
     @GetMapping("/getorders")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public List<OrderWithItemIdResponse> getAllSellerOrders(@CookieValue("Authorization") String jwtToken){
+    public List<OrderWithItemIdResponse> getAllSellerOrders(@RequestHeader("Authorization") String jwtToken){
         return orderService.getAllSellerOrders(jwtToken);
     }
 }
