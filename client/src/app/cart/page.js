@@ -6,11 +6,13 @@ import Card from '@/components/Card';
 import ItemCart from '@/components/ItemCart';
 import productPhoto1 from "@/assets/complete-product-images/image 1.png";
 import CustomButton from '@/components/CustomButton';
+import CheckoutModal from '@/components/Checkout Modal';
 
 function Cart() {
   const items = useSelector(state=>state.cart);
   const [totalCartCost, setTotalCartCost] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
+  const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
 
   const calculateTotalCartCostBeforeCharges = ()=>{
     if(items?.length != 0){
@@ -97,9 +99,10 @@ function Cart() {
               <span className='total-summary-value'>Rs {totalCartCostAfterCharges(20,15)}</span>
             </div>
           </div>
-          <CustomButton>Go To Checkout</CustomButton>
+          <CustomButton onClick={()=>setCheckoutModalOpen(true)}>Go To Checkout</CustomButton>
         </Card>
       </div>
+      {checkoutModalOpen && <CheckoutModal items={items} totalCost={totalCartCostAfterCharges(20,15)} open={checkoutModalOpen} handleClose={()=>setCheckoutModalOpen(false)}/>}
     </div>
   )
 }

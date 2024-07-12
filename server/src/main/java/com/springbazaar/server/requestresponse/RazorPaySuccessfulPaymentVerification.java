@@ -9,9 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRequest {
-    private String deliveryAddress;
-    private int pinCode;
-    private int itemId;
-    private float orderValue;
+public class RazorPaySuccessfulPaymentVerification {
+    private boolean isPaymentVerificationSuccessful;
 }

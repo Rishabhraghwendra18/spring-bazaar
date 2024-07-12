@@ -1,26 +1,36 @@
 package com.springbazaar.server.services;
 
-import com.springbazaar.server.controllers.Order;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
+import com.razorpay.Utils;
 import com.springbazaar.server.entities.InventoryEntity;
 import com.springbazaar.server.entities.OrdersEntity;
+import com.springbazaar.server.exceptionHandlers.ApplicationException;
 import com.springbazaar.server.repository.InventoryRepository;
 import com.springbazaar.server.repository.OrderRepository;
-import com.springbazaar.server.requestresponse.OrderRequest;
-import com.springbazaar.server.requestresponse.OrderWithItemIdResponse;
+import com.springbazaar.server.requestresponse.*;
 import com.springbazaar.server.utils.JwtUtil;
+import com.springbazaar.server.utils.PaymentState;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
     private final InventoryRepository inventoryRepository;
     private final JwtUtil jwtUtil;
+    @Value("${razorpay.key.id}")
+    private String razorpayKeyId;
+    @Value("${razorpay.key.secret}")
+    private String razorPayKeySecret;
 
     @Autowired
     public OrderService(OrderRepository orderRepository, InventoryRepository inventoryRepository,JwtUtil jwtUtil) {
@@ -33,7 +43,8 @@ public class OrderService {
         String userId = jwtUtil.getSubjectFromToken(jwtToken);
         return orderRepository.findByBuyerId(userId);
     }
-    public OrdersEntity createOrder(OrderRequest orderRequest, String jwtToken){
+    @Transactional
+    public RazorpayCreateOrderResponse createOrder(OrderRequest orderRequest, String jwtToken){
         //        Updating Item Quantity
         Optional<InventoryEntity> itemQuantityUpdate = inventoryRepository.findById(orderRequest.getItemId());
         if(itemQuantityUpdate.isPresent() && itemQuantityUpdate.get().getItemQuantity() == 0) return null;
@@ -49,11 +60,77 @@ public class OrderService {
         order.setOrderDate(orderDate);
         order.setDeliveryAddress(orderRequest.getDeliveryAddress());
         order.setPinCode(orderRequest.getPinCode());
+        order.setPaymentState(PaymentState.CREATED);
+
         InventoryEntity item = new InventoryEntity();
         item.setId(orderRequest.getItemId());
         order.setItemId(item);
 
-        return orderRepository.save(order);
+//        Saving the order
+        OrdersEntity savedCreatedOrder = orderRepository.save(order);
+
+//        Creating Razorpay Order
+        try{
+            RazorpayClient razorpayClient = new RazorpayClient(this.razorpayKeyId,this.razorPayKeySecret);
+            JSONObject razorPayOrderRequest = new JSONObject();
+            razorPayOrderRequest.put("amount",orderRequest.getOrderValue()*100);
+            razorPayOrderRequest.put("currency", "INR");
+            razorPayOrderRequest.put("receipt", savedCreatedOrder.getOrderId().toString());
+            System.out.println("order request: "+razorPayOrderRequest.toString());
+            // Setting content type and accept headers
+//            Map<String, String> headers = new HashMap<>();
+//            headers.put("Content-Type", "application/json");
+//            headers.put("Accept", "application/json");
+//            razorpayClient.addHeaders(headers);
+            Order createdOrder = razorpayClient.orders.create(razorPayOrderRequest);
+            RazorpayCreateOrderResponse response = new RazorpayCreateOrderResponse();
+            response.setId(createdOrder.get("id") != null ? createdOrder.get("id").toString() : null);
+            response.setEntity(createdOrder.get("entity") != null ? createdOrder.get("entity").toString() : null);
+            response.setAmount(createdOrder.get("amount") != null ? createdOrder.get("amount") : 0);
+            response.setAmountPaid(createdOrder.get("amount_paid") != null ? createdOrder.get("amount_paid") : 0);
+            response.setAmountDue(createdOrder.get("amount_due") != null ? createdOrder.get("amount_due") : 0);
+            response.setCurrency(createdOrder.get("currency") != null ? createdOrder.get("currency").toString() : null);
+            response.setReceipt(createdOrder.get("receipt") != null ? createdOrder.get("receipt").toString() : null);
+            response.setOfferId(createdOrder.get("offer_id") != null ? createdOrder.get("offer_id").toString() : null);
+            response.setStatus(createdOrder.get("status") != null ? createdOrder.get("status").toString() : null);
+            response.setAttempts(createdOrder.get("attempts") != null ? Integer.parseInt(createdOrder.get("attempts").toString()) : 0);
+            return response;
+//            return null;
+        }catch(RazorpayException e){
+            System.out.println("Exception while creating razorpay order: "+e.getMessage());
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        }
+
+    }
+    public RazorPaySuccessfulPaymentVerification verifyAndUpdateOrderStatus(RazorpayOrderUpdateRequest razorpayOrderUpdateRequest){
+        Optional<OrdersEntity> order = orderRepository.findById(razorpayOrderUpdateRequest.getOrderId());
+        OrdersEntity orderEntity = order.orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Order with order id: "+razorpayOrderUpdateRequest.getOrderId()+" not found"));
+        try{
+            RazorpayClient razorpayClient = new RazorpayClient(this.razorpayKeyId,this.razorPayKeySecret);
+            JSONObject options = new JSONObject();
+            options.put("razorpay_order_id", razorpayOrderUpdateRequest.getOrderId());
+            options.put("razorpay_payment_id", razorpayOrderUpdateRequest.getRazorpayPaymentId());
+            options.put("razorpay_signature", razorpayOrderUpdateRequest.getRazorpaySignature());
+            boolean status =  Utils.verifyPaymentSignature(options, this.razorPayKeySecret);
+            if (!status){
+                throw new ApplicationException(HttpStatus.BAD_REQUEST.value(), "Payment Verification Failed");
+            }
+            orderEntity.setPaymentState(PaymentState.CAPTURED);
+            orderEntity.setRazorPaySignature(razorpayOrderUpdateRequest.getRazorpaySignature());
+            orderEntity.setRazorPayOrderId(razorpayOrderUpdateRequest.getRazorpayOrderId());
+            orderEntity.setRazorPayPaymentId(razorpayOrderUpdateRequest.getRazorpayPaymentId());
+            orderRepository.save(orderEntity);
+            return new RazorPaySuccessfulPaymentVerification(true);
+        }
+        catch(RazorpayException e){
+            System.out.println("Exception while verifying order: "+e.getMessage());
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        }
+        catch (ApplicationException e){
+            orderRepository.save(orderEntity);
+            orderEntity.setPaymentState(PaymentState.FAILED);
+            throw new ApplicationException(e.getErrorCode(),e.getMessage());
+        }
     }
     public List<OrderWithItemIdResponse> getAllSellerOrders(String token){
         String userId = jwtUtil.getSubjectFromToken(token);

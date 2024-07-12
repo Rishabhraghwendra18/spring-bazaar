@@ -3,11 +3,12 @@ package com.springbazaar.server.controllers;
 import com.springbazaar.server.entities.OrdersEntity;
 import com.springbazaar.server.entities.UsersEntity;
 import com.springbazaar.server.repository.OrderRepository;
-import com.springbazaar.server.requestresponse.OrderRequest;
-import com.springbazaar.server.requestresponse.OrderWithItemIdResponse;
+import com.springbazaar.server.requestresponse.*;
 import com.springbazaar.server.services.OrderService;
 import com.springbazaar.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,8 +37,13 @@ public class Order {
         return orderService.getAllBuyerOrders(jwtToken);
     }
     @PostMapping("/purchase")
-    public OrdersEntity createOrder(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwtToken){
+    public RazorpayCreateOrderResponse createOrder(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwtToken){
         return orderService.createOrder(orderRequest,jwtToken);
+    }
+    @PutMapping("/purchase")
+    public ResponseEntity<RazorPaySuccessfulPaymentVerification> verifyAndUpdateOrder(@RequestBody RazorpayOrderUpdateRequest request){
+        RazorPaySuccessfulPaymentVerification success = orderService.verifyAndUpdateOrderStatus(request);
+        return new ResponseEntity<>(success, HttpStatus.OK);
     }
     @GetMapping("/getorders")
     @PreAuthorize("hasRole('ROLE_SELLER')")
