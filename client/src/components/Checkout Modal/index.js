@@ -20,6 +20,20 @@ const style = {
   p: 4,
 };
 
+function loadScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement('script')
+    script.src = src
+    script.onload = () => {
+      resolve(true)
+    }
+    script.onerror = () => {
+      resolve(false)
+    }
+    document.body.appendChild(script)
+  })
+}
+
 function CheckoutModal({ open, handleClose,items,totalCost }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [snackBarData, setSnackBarData] = useState({open:false,messageType:"",message:""});
@@ -29,6 +43,56 @@ function CheckoutModal({ open, handleClose,items,totalCost }) {
     watch,
     formState: { errors },
   } = useForm();
+  async function displayRazorpay (receipt,prefill) {
+
+    const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+
+      if (!res){
+        alert('Razropay failed to load!!')
+        return 
+      }
+
+    const options = {
+      "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+      "amount": `${receipt.amount}`, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "Spring Bazaar",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": receipt.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": async function (response){
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature)
+        verifyAndUpdate(receipt,response.razorpay_payment_id,response.razorpay_order_id,response.razorpay_signature)
+    },
+      prefill,
+      "notes": {
+          "address": "Spring bazaar Office"
+      },
+      "theme": {
+          "color": "#3399cc"
+      }
+  };
+  const paymentObject = new window.Razorpay(options); 
+  paymentObject.open();
+  }
+  const verifyAndUpdate = async (receipt,razorpayPaymentId,razorpayOrderId,razorpaySignature)=>{
+    try {
+      let payload ={
+        orderId:parseInt(receipt?.receipt),
+        razorpayPaymentId,
+        razorpayOrderId,
+        razorpaySignature
+      }
+      console.log("payload: ",payload)
+      const response = await verifyAndUpdateOrder(payload);
+      console.log("response data: ",response.data);
+    } catch (error) {
+      console.log("error while verifying order: ",error);
+      alert("Error: Cannot verify payment");
+    }
+  }
   const onPayment = async (data) => {
     try {
       let payload={
@@ -40,6 +104,7 @@ function CheckoutModal({ open, handleClose,items,totalCost }) {
       const response = await createOrder(payload);
       console.log("response: ",response.data);
       console.log("data: ",payload)
+      displayRazorpay(response.data,data)
     } catch (error) {
       let errorMessage = error.response?.data?.message
       console.log("Error while creating user",errorMessage);

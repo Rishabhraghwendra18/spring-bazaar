@@ -11,8 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RazorpayOrderUpdateRequest {
-    private int orderId;
-    private PaymentState paymentStatus;
+    private Integer orderId;
     private String razorpayPaymentId;
     private String razorpayOrderId;
     private String razorpaySignature;

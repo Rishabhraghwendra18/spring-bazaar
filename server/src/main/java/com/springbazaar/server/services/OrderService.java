@@ -108,7 +108,7 @@ public class OrderService {
         try{
             RazorpayClient razorpayClient = new RazorpayClient(this.razorpayKeyId,this.razorPayKeySecret);
             JSONObject options = new JSONObject();
-            options.put("razorpay_order_id", razorpayOrderUpdateRequest.getOrderId());
+            options.put("razorpay_order_id", razorpayOrderUpdateRequest.getRazorpayOrderId());
             options.put("razorpay_payment_id", razorpayOrderUpdateRequest.getRazorpayPaymentId());
             options.put("razorpay_signature", razorpayOrderUpdateRequest.getRazorpaySignature());
             boolean status =  Utils.verifyPaymentSignature(options, this.razorPayKeySecret);
