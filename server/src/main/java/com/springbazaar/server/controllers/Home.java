@@ -2,11 +2,9 @@ package com.springbazaar.server.controllers;
 
 import com.springbazaar.server.entities.InventoryEntity;
 import com.springbazaar.server.services.HomeService;
+import com.springbazaar.server.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +23,8 @@ public class Home {
     }
     @GetMapping("/{id}")
     public InventoryEntity getItemById(@PathVariable Integer id){return homeService.getItemById(id);}
+    @GetMapping("/search")
+    public List<InventoryEntity> searchProducts(@RequestParam("query") String query) {
+        return homeService.searchProductsByTitle(query);
+    }
 }

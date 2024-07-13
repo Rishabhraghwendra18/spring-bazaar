@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface InventoryRepository extends JpaRepository<InventoryEntity,Integer> {
     List<InventoryEntity> findAllBySellerId(String id);
+    List<InventoryEntity> findByItemTitleContainingIgnoreCase(String title);
 }

@@ -23,4 +23,7 @@ public class HomeService {
         Optional<InventoryEntity> item = inventoryRepository.findById(id);
         return item.orElse(null);
     }
+    public List<InventoryEntity> searchProductsByTitle(String title) {
+        return inventoryRepository.findByItemTitleContainingIgnoreCase(title);
+    }
 }
