@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class RazorpayOrderUpdateRequest {
-    private Integer orderId;
+    private List<Integer> orderIds;
     private String razorpayPaymentId;
     private String razorpayOrderId;
     private String razorpaySignature;

@@ -10,6 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import Backdrop from "../CustomBackdrop";
 import "./index.css";
+import { useRouter } from "next/router";
 import { createOrder, verifyAndUpdateOrder } from "@/services/order";
 import CustomButton from "../CustomButton";
 
@@ -41,6 +42,7 @@ function loadScript(src) {
 }
 
 function CheckoutModal({ open, handleClose, items, totalCost }) {
+  // const router = useRouter();
   const [isSignUp, setIsSignUp] = useState(false);
   const [snackBarData, setSnackBarData] = useState({
     open: false,
@@ -104,7 +106,7 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
     setPaymentConfirmation({open:true,message:"Confirming Payment"})
     try {
       let payload = {
-        orderId: parseInt(receipt?.receipt),
+        orderIds:receipt?.orderIdsList,
         razorpayPaymentId,
         razorpayOrderId,
         razorpaySignature,
@@ -113,6 +115,7 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
       const response = await verifyAndUpdateOrder(payload);
       console.log("response data: ", response.data);
       setPaymentConfirmation({...paymentConfirmation,message:"Payment Done"})
+      // router.push("/verify")
     } catch (error) {
       console.log("error while verifying order: ", error);
       setPaymentConfirmation({...paymentConfirmation,message:"Cannot Confirm Payment"})
@@ -120,12 +123,19 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
   };
   const onPayment = async (data) => {
     try {
+      // let payload = items?.map(item=>({
+      //   deliveryAddress: data?.address,
+      //   pinCode: data?.pinCode,
+      //   itemId: item?.id,
+      //   orderValue: Math.round(totalCost),
+      // }))
       let payload = {
         deliveryAddress: data?.address,
         pinCode: data?.pinCode,
-        itemId: items[0]?.id,
         orderValue: Math.round(totalCost),
       };
+      payload.itemIds = items?.map((item)=>item.id);
+
       const response = await createOrder(payload);
       console.log("response: ", response.data);
       console.log("data: ", payload);

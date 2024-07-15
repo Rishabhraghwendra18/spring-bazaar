@@ -23,5 +23,6 @@ public class RazorpayCreateOrderResponse {
     private String status;
     private int attempts;
     private List<String> notes;
+    private List<Integer> orderIdsList;
     private long createdAt;
 }
