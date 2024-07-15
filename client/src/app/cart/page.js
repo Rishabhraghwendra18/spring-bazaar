@@ -64,7 +64,8 @@ function Cart() {
   return (
     <div className='cart-container'>
       <h2>YOUR CART</h2>
-      <div className='cart'>
+      {items?.length > 0 ? (
+        <div className='cart'>
         <Card className="cart-card">
           {items.map((item,index)=>{
             if (index !== items.length -1) {
@@ -91,7 +92,7 @@ function Cart() {
             </div>
             <div className='order-summary'>
               <span className='title-summary'>Delivery Fee</span>
-              <span className='summary-value'>$15</span>
+              <span className='summary-value'>Rs 15</span>
             </div>
             <hr className="divider" />
             <div className='order-summary'>
@@ -102,6 +103,9 @@ function Cart() {
           <CustomButton onClick={()=>setCheckoutModalOpen(true)}>Go To Checkout</CustomButton>
         </Card>
       </div>
+      ):(
+        <div style={{height:"100vh",display:'flex',justifyContent:"center"}}><h2>Cart Is Empty</h2></div>
+      )}
       {checkoutModalOpen && <CheckoutModal items={items} totalCost={totalCartCostAfterCharges(20,15)} open={checkoutModalOpen} handleClose={()=>setCheckoutModalOpen(false)}/>}
     </div>
   )
