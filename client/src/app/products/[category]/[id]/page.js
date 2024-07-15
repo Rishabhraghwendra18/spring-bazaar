@@ -1,8 +1,8 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
-import { Tabs, Tab, Button, Typography } from "@mui/material";
+import { Tabs, Tab, Alert,Snackbar, Typography } from "@mui/material";
 import { FaStar } from "react-icons/fa";
 import productPhoto1 from "@/assets/complete-product-images/image 1.png";
 import productPhoto2 from "@/assets/complete-product-images/image 2.png";
@@ -10,29 +10,29 @@ import productPhoto3 from "@/assets/complete-product-images/image 3.png";
 import "./page.css";
 import CustomButton from "@/components/CustomButton";
 import Card from "@/components/Card";
-import { addItemToCart } from '@/lib/cartSlice';
+import { addItemToCart } from "@/lib/cartSlice";
 import { getProductById } from "@/services/home";
 
-function Product({params}) {
+function Product({ params }) {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedImage, setSelectedImage] = useState(productPhoto1);
   const [selectedSize, setSelectedSize] = useState("Medium");
   const [productDetails, setProductDetails] = useState({});
+  const [openSnackBar, setOpenSnackBar] = useState(false);
   const dispatch = useDispatch();
 
-  const fetchProductById = async()=>{
+  const fetchProductById = async () => {
     try {
       const response = await getProductById(params.id);
       setProductDetails(response?.data);
-      setSelectedImage(`/images/${response?.data?.fileName}`)
+      setSelectedImage(`/images/${response?.data?.fileName}`);
     } catch (error) {
-      console.log("Error while fetching product by id: ",error);
+      console.log("Error while fetching product by id: ", error);
     }
-  }
+  };
   useEffect(() => {
     fetchProductById();
-  }, [])
-  
+  }, []);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -45,35 +45,35 @@ function Product({params}) {
   const handleSizeClick = (size) => {
     setSelectedSize(size);
   };
-  const handleAddToCart = () =>{
-    dispatch(addItemToCart(productDetails))
-  }
+  const handleAddToCart = () => {
+    dispatch(addItemToCart(productDetails));
+    setOpenSnackBar(true);
+  };
   return (
     <div className="product-page">
       <div className="product-details">
         <div className="product-images">
-          <div
-            className="small-image"
-            onClick={() => {}}
-          >
-            <Image src={selectedImage} alt="Product" width={152} height={167}/>
+          <div className="small-image" onClick={() => {}}>
+            <Image src={selectedImage} alt="Product" width={152} height={167} />
           </div>
-          <div
-            className="small-image"
-            onClick={() => {}}
-          >
-            <Image src={selectedImage} alt="Product" width={152} height={167}/>
+          <div className="small-image" onClick={() => {}}>
+            <Image src={selectedImage} alt="Product" width={152} height={167} />
           </div>
           <div
             className="small-image"
             // onClick={() => handleImageClick(productPhoto3)}
-            onClick={() =>{}}
+            onClick={() => {}}
           >
-            <Image src={selectedImage} alt="Product" width={152} height={167}/>
+            <Image src={selectedImage} alt="Product" width={152} height={167} />
           </div>
         </div>
         <div className="large-image">
-          <Image src={selectedImage} alt="Selected Product" width={100} height={100}/>
+          <Image
+            src={selectedImage}
+            alt="Selected Product"
+            width={100}
+            height={100}
+          />
         </div>
         <div className="product-info">
           <Typography variant="h4" className="product-title">
@@ -86,7 +86,9 @@ function Product({params}) {
             <FaStar className="gold-star" />
             <FaStar className="gold-star" />
           </div>
-          <Typography className="product-price">Rs {productDetails.itemPrice}</Typography>
+          <Typography className="product-price">
+            Rs {productDetails.itemPrice}
+          </Typography>
           <Typography className="product-meta">
             {productDetails?.itemDescription}
           </Typography>
@@ -106,7 +108,9 @@ function Product({params}) {
             ))}
           </div>
           <hr className="divider" />
-          <CustomButton style={{maxWidth:600}} onClick={handleAddToCart}>Add to Cart</CustomButton>
+          <CustomButton style={{ maxWidth: 600 }} onClick={handleAddToCart}>
+            Add to Cart
+          </CustomButton>
         </div>
       </div>
       <Tabs
@@ -123,7 +127,11 @@ function Product({params}) {
         <Tab label="Rating & Reviews" />
       </Tabs>
       <div className="tab-content">
-        {selectedTab === 0 && <div className="tabs-container">{productDetails?.itemDescription}</div>}
+        {selectedTab === 0 && (
+          <div className="tabs-container">
+            {productDetails?.itemDescription}
+          </div>
+        )}
         {selectedTab === 1 && (
           <div className="reviews-container tabs-container">
             <Card>
@@ -173,6 +181,18 @@ function Product({params}) {
           </div>
         )}
       </div>
+      {
+        openSnackBar && (<Snackbar open={openSnackBar} autoHideDuration={6000} onClose={()=>setOpenSnackBar(false)} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+          <Alert
+            onClose={()=>setOpenSnackBar(false)}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            Added Item to Cart
+          </Alert>
+        </Snackbar>)
+      }
     </div>
   );
 }

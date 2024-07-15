@@ -15,7 +15,8 @@ const cartSlice = createSlice({
       );
     },
     clearCart: (state) => {
-      state = [];
+      console.log("clearning the sate");
+      return [];
     },  
   },
 });
