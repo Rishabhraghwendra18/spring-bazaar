@@ -23,7 +23,10 @@ public class UserService {
     }
     public UsersEntity createUser(UsersEntity usersEntity){
         var user = userRepository.findById(usersEntity.getEmail());
-        return user.orElseThrow(()-> new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Not able to create user"));
+        if(user.isPresent()){
+            throw  new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "User already exists!");
+        }
+        return userRepository.save(usersEntity);
     }
     public String login(LoginRequest request){
         var user = userRepository.findById(request.getEmail());

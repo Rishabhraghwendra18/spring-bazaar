@@ -23,6 +23,7 @@ const style = {
 function LoginSignUpModal({ open, handleClose }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [snackBarData, setSnackBarData] = useState({open:false,messageType:"",message:""});
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -30,18 +31,22 @@ function LoginSignUpModal({ open, handleClose }) {
     formState: { errors },
   } = useForm();
   const onSignUp = async (data) => {
+    setIsLoading(true);
     try {
       let payload = {...data,role:"ROLE_BUYER"};
       const response = await createUser(payload);
       console.log("response data: ",response.data);
+      setIsLoading(false);
       handleClose();
     } catch (error) {
       let errorMessage = error.response?.data?.message
       console.log("Error while creating user",errorMessage);
       setSnackBarData({open:true,messageType:"error",message:errorMessage})
+      setIsLoading(false);
     }
   };
   const onLogIn = async (data) => {
+    setIsLoading(true);
     try {
       let payload = {...data};
       const response = await loginUser(payload);
@@ -50,6 +55,7 @@ function LoginSignUpModal({ open, handleClose }) {
       if(jwtToken !=null){
         setCookie("Authorization",`Bearer ${jwtToken}`,{expires: new Date(expirationTime)})
         console.log("response data: ",jwtToken);
+        setIsLoading(false);
         handleClose();
       }
       else{
@@ -57,6 +63,7 @@ function LoginSignUpModal({ open, handleClose }) {
       }
     } catch (error) {
       console.log("Error while creating user",error);
+      setIsLoading(false);
       setSnackBarData({open:true,messageType:"error",message:"Unable to login"})
     }
   };
@@ -175,7 +182,7 @@ function LoginSignUpModal({ open, handleClose }) {
                 required
               />
             </div>
-            <CustomButton type={"submit"}>Log In</CustomButton>
+            <CustomButton type={"submit"}>{isLoading ? "Loging...":"Log In"}</CustomButton>
             <Typography className="modal-switch-text">
               Don't have an account? {" "}
               <Link
@@ -183,7 +190,7 @@ function LoginSignUpModal({ open, handleClose }) {
                 href="#"
                 className="modal-switch-link"
               >
-                Sign Up here.
+                {isLoading ? "Creating Account...":"Sign Up here"}
               </Link>
             </Typography>
           </form>

@@ -43,12 +43,6 @@ function loadScript(src) {
 
 function CheckoutModal({ open, handleClose, items, totalCost }) {
   const router = useRouter();
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [snackBarData, setSnackBarData] = useState({
-    open: false,
-    messageType: "",
-    message: "",
-  });
   const [paymentConfirmation, setPaymentConfirmation] = useState({open:false,message:""});
 
   const {
@@ -142,11 +136,6 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
     } catch (error) {
       let errorMessage = error.response?.data?.message;
       console.log("Error while creating user", errorMessage);
-      setSnackBarData({
-        open: true,
-        messageType: "error",
-        message: errorMessage,
-      });
     }
   };
 

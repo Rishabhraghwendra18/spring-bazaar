@@ -39,12 +39,6 @@ public class Users {
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid @RequestBody UsersEntity user){
         var res = userService.createUser(user);
-        if(res == null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Object(){
-                public boolean error = true;
-                public String message = "User already exists";
-            });
-        }
         return ResponseEntity.status(HttpStatus.OK).body(new Object(){
             public boolean error = false;
             public String message = "User created successfully";
