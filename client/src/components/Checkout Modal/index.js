@@ -10,7 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import Backdrop from "../CustomBackdrop";
 import "./index.css";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/navigation'
 import { createOrder, verifyAndUpdateOrder } from "@/services/order";
 import CustomButton from "../CustomButton";
 
@@ -42,7 +42,7 @@ function loadScript(src) {
 }
 
 function CheckoutModal({ open, handleClose, items, totalCost }) {
-  // const router = useRouter();
+  const router = useRouter();
   const [isSignUp, setIsSignUp] = useState(false);
   const [snackBarData, setSnackBarData] = useState({
     open: false,
@@ -113,9 +113,8 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
       };
       console.log("payload: ", payload);
       const response = await verifyAndUpdateOrder(payload);
-      console.log("response data: ", response.data);
-      setPaymentConfirmation({...paymentConfirmation,message:"Payment Done"})
-      // router.push("/verify")
+      console.log("response data: ", response.data)
+      router.push("/verify")
     } catch (error) {
       console.log("error while verifying order: ", error);
       setPaymentConfirmation({...paymentConfirmation,message:"Cannot Confirm Payment"})
