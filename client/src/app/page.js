@@ -1,6 +1,8 @@
 "use client";
+import { useState,useEffect } from "react";
 import Image from "next/image";
 import Link from 'next/link'
+import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import calvinKleinLogo from "../assets/calvin-klein.png";
 import gucciLogo from "../assets/gucci-logo-1.png";
@@ -12,20 +14,23 @@ import product2 from "../assets/Frame 33.png";
 import product3 from "../assets/Frame 34.png";
 import product4 from "../assets/Frame 38.png";
 import { FaStar } from "react-icons/fa";
+import { getProductsForHomePage } from "@/services/home";
 import "./page.css";
 
 export default function Home() {
-  const products = [
-    {
-      id: 1,
-      name: "T-Shirt With Tape Details",
-      image: product1,
-      price: "$100",
-    },
-    { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
-    { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
-    { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
-  ];
+  const [products, setProducts] = useState([]);
+  const router = useRouter();
+  // const products = [
+  //   {
+  //     id: 1,
+  //     name: "T-Shirt With Tape Details",
+  //     image: product1,
+  //     price: "$100",
+  //   },
+  //   { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
+  //   { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
+  //   { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
+  // ];
 
   const reviews = [
     {
@@ -41,6 +46,27 @@ export default function Home() {
       review: "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."
     },
   ];
+
+  const fetchProductsForHomePage = async () =>{
+    try {
+      const response = await getProductsForHomePage(4);
+      const {data}=response;
+      let products = data?.map(product=>({
+        id:product?.id,
+        name:product?.itemTitle,
+        image:product?.fileName,
+        price:product?.itemPrice
+      }))
+      console.log("data: ",products);
+      setProducts(products);
+    } catch (error) {
+      console.log("Error while fetching data for home page: ",error);
+    }
+  }
+  useEffect(() => {
+    fetchProductsForHomePage()
+  }, [])
+  
 
   return (
     <>
@@ -91,11 +117,13 @@ export default function Home() {
         <h2 className="new-arrivals-title">NEW ARRIVALS</h2>
         <div className="new-arrivals">
           {products.map((product) => (
-            <div className="product-card" key={product.id}>
-              <Image
-                src={product.image}
+            <div className="product-card" key={product.id} onClick={()=>router.push(`/products/new-arrivals/${product.id}`)}>
+               <Image
+                src={`/images/${product.image}`}
                 alt={product.name}
                 className="product-image"
+                width={295}
+                height={298}
               />
               <div className="product-name">{product.name}</div>
               <div className="product-reviews">
@@ -105,7 +133,7 @@ export default function Home() {
                 <FaStar className="gold-star" />
                 <FaStar className="gold-star" />
               </div>
-              <div className="product-price">{product.price}</div>
+              <div className="product-price">Rs {product.price}</div>
             </div>
           ))}
         </div>
@@ -115,11 +143,13 @@ export default function Home() {
         <h2 className="new-arrivals-title">TOP SELLING</h2>
         <div className="new-arrivals">
           {products.map((product) => (
-            <div className="product-card" key={product.id}>
+            <div className="product-card" key={product.id} onClick={()=>router.push(`/products/top-selling/${product.id}`)}>
               <Image
-                src={product.image}
+                src={`/images/${product.image}`}
                 alt={product.name}
                 className="product-image"
+                width={295}
+                height={298}
               />
               <div className="product-name">{product.name}</div>
               <div className="product-reviews">
@@ -129,7 +159,7 @@ export default function Home() {
                 <FaStar className="gold-star" />
                 <FaStar className="gold-star" />
               </div>
-              <div className="product-price">{product.price}</div>
+              <div className="product-price">Rs {product.price}</div>
             </div>
           ))}
         </div>

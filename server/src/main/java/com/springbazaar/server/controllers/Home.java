@@ -18,7 +18,10 @@ public class Home {
         this.homeService = homeService;
     }
     @GetMapping("/")
-    List<InventoryEntity> getAllItems(){
+    List<InventoryEntity> getAllItems(@RequestParam(required = false) Integer limit){
+        if(limit !=null){
+            return homeService.getTopInventoryItems(limit);
+        }
         return homeService.getAllInventoryItems();
     }
     @GetMapping("/{id}")

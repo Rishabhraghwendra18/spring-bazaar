@@ -9,5 +9,8 @@ async function getProductById(id) {
 async function searchProductByTitle(query) {
     return await apiClient.get(`/home/search?query=${query}`);
 }
+async function getProductsForHomePage(limit) {
+    return await apiClient.get(`/home/?limit=${limit}`);
+}
 
-export {getAllProducts,getProductById,searchProductByTitle}
+export {getAllProducts,getProductById,searchProductByTitle,getProductsForHomePage}
