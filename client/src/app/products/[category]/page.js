@@ -3,6 +3,7 @@ import {useState,useEffect} from 'react'
 import Card from '@/components/Card'
 import ItemCard from '@/components/ItemCard';
 import { useRouter } from 'next/navigation'
+import {CircularProgress} from "@mui/material";
 import product1 from "../../../assets/Frame 32.png";
 import product2 from "../../../assets/Frame 33.png";
 import product3 from "../../../assets/Frame 34.png";
@@ -15,7 +16,11 @@ import { getAllProducts } from '@/services/home';
 function Category({params}) {
   const router = useRouter();
   const [products, setProducts] = useState([]);
+  const [originalProductsList, setOriginalProductsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [value, setValue] = useState([0, 2000]);
   const fetchProducts = async ()=>{
+    setIsLoading(true);
     try {
       const response = await getAllProducts();
       const {data} = response;
@@ -26,14 +31,26 @@ function Category({params}) {
         fileName:product.fileName,
         price: product.itemPrice
       }));
+      setIsLoading(false);
       setProducts(products);
+      setOriginalProductsList(products);
     } catch (error) {
       console.log("error while fetching products: ",error)
+      setIsLoading(false);
     }
   }
   useEffect(() => {
     fetchProducts();
   }, [])
+  const handleChangeSlider = (_,value)=>{
+    console.log("value: ",value)
+    setValue(value);
+  }
+  const handleApplyFliter = () =>{
+    let filteredProducts = originalProductsList?.filter(product => value[0]<=product?.price && product?.price <= value[1]);
+    console.log("filtered: ",filteredProducts)
+    setProducts(filteredProducts);
+  }
   
  
   // const products = [
@@ -63,11 +80,14 @@ function Category({params}) {
                 <hr className="divider" />
                 <div className='filter'>
                 <h4>Price</h4>
-                <CustomSlider/>
-                <CustomButton>Apply Filter</CustomButton>
+                <CustomSlider handleChange={handleChangeSlider} value={value}/>
+                <CustomButton onClick={handleApplyFliter}>Apply Filter</CustomButton>
                 </div>
               </Card>
             </div>
+            {isLoading ? <div className='products-container' style={{display:"flex",alignItems:'center',justifyContent:"center"}}>
+              <CircularProgress color="info" />
+            </div>:(
             <div className='products-container'>
               <h2>{params.category}</h2>
               <div className='products'>
@@ -78,6 +98,7 @@ function Category({params}) {
                 ))}
               </div>
             </div>
+            )}
         </div>
     </div>
   )

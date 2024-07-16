@@ -15,15 +15,10 @@ import { Slider, Typography, Tooltip } from "@mui/material";
 //   },
 // });
 
-function CustomSlider() {
+function CustomSlider({handleChange,value}) {
 //   const classes = useStyles();
-  const [value, setValue] = useState([0, 200]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   const formatValue = (value) => {
-    return `$${value}`;
+    return `Rs ${value}`;
   };
   return (
     <div>
@@ -35,7 +30,7 @@ function CustomSlider() {
           valueLabelDisplay="off"
           
           min={0}
-          max={200}
+          max={2000}
           color="primary"
           style={{ color: '#000000' }}
         />
