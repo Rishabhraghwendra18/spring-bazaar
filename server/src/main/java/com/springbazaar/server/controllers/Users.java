@@ -12,6 +12,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,14 +22,18 @@ import org.springframework.web.bind.annotation.*;
 public class Users {
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final DaoAuthenticationProvider authenticationProvider;
     @Autowired
-    public Users(UserService userService, JwtUtil jwtUtil){
+    public Users(UserService userService, JwtUtil jwtUtil, DaoAuthenticationProvider authenticationProvider){
 
         this.userService=userService;
         this.jwtUtil=jwtUtil;
+        this.authenticationProvider=authenticationProvider;
     }
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse clientResponse){
+        authenticationProvider.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         var jwtToken = userService.login(loginRequest);
         Cookie cookie = new Cookie("Authorization",jwtToken);
         cookie.setPath("/");
@@ -35,6 +42,7 @@ public class Users {
         clientResponse.addCookie(cookie);
         JwtResponse jwtResponse = new JwtResponse(jwtToken,loginRequest.getEmail(),"Login successfull",false,jwtUtil.getExpirationDateFromToken(jwtToken));
         return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
+//        return null;
     }
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid @RequestBody UsersEntity user){

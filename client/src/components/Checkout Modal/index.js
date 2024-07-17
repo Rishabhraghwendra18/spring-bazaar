@@ -126,6 +126,7 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
         deliveryAddress: data?.address,
         pinCode: data?.pinCode,
         orderValue: Math.round(totalCost),
+        size:items[0]?.size
       };
       payload.itemIds = items?.map((item)=>item.id);
 

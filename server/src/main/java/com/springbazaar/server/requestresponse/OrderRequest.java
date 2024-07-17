@@ -1,5 +1,6 @@
 package com.springbazaar.server.requestresponse;
 
+import com.springbazaar.server.utils.ProductSize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,5 @@ public class OrderRequest {
     private int pinCode;
     private List<Integer> itemIds;
     private float orderValue;
+    private ProductSize size;
 }

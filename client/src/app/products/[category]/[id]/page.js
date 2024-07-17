@@ -19,6 +19,25 @@ function Product({ params }) {
   const [selectedSize, setSelectedSize] = useState("Medium");
   const [productDetails, setProductDetails] = useState({});
   const [openSnackBar, setOpenSnackBar] = useState(false);
+  const sizes =[
+  {
+    option:"Small",
+    value:"SMALL"
+  },
+  {
+    option:"Medium",
+    value:"MEDIUM"
+  },
+  {
+    option:"Large",
+    value:"LARGE"
+  },
+  {
+    option:"X-Large",
+    value:"XLARGE"
+  },
+
+]
   const dispatch = useDispatch();
 
   const fetchProductById = async () => {
@@ -46,7 +65,7 @@ function Product({ params }) {
     setSelectedSize(size);
   };
   const handleAddToCart = () => {
-    dispatch(addItemToCart(productDetails));
+    dispatch(addItemToCart({...productDetails,size:selectedSize}));
     setOpenSnackBar(true);
   };
   return (
@@ -95,15 +114,15 @@ function Product({ params }) {
           <hr className="divider" />
           <Typography className="choose-size">Choose Size</Typography>
           <div className="size-options">
-            {["Small", "Medium", "Large", "X-Large"].map((size) => (
+            {sizes.map((size) => (
               <div
                 key={size}
                 className={`size-option ${
-                  selectedSize === size ? "selected" : ""
+                  selectedSize === size.value ? "selected" : ""
                 }`}
-                onClick={() => handleSizeClick(size)}
+                onClick={() => handleSizeClick(size.value)}
               >
-                {size}
+                {size.option}
               </div>
             ))}
           </div>

@@ -67,6 +67,8 @@ public class OrderService {
             order.setDeliveryAddress(orderRequest.getDeliveryAddress());
             order.setPinCode(orderRequest.getPinCode());
             order.setPaymentState(PaymentState.CREATED);
+            order.setProductSize(orderRequest.getSize());
+            order.setOrderValue(orderRequest.getOrderValue());
 
             InventoryEntity item = new InventoryEntity();
             item.setId(itemId);
@@ -74,6 +76,7 @@ public class OrderService {
             totalOrdersId+=itemId;
 
 //        Saving the order
+            System.out.println("orders object: "+order.toString());
             OrdersEntity savedCreatedOrder = orderRepository.save(order);
             orderIdsList.add(savedCreatedOrder.getOrderId());
 

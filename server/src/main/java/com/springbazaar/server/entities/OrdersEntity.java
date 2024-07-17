@@ -3,6 +3,7 @@ package com.springbazaar.server.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.springbazaar.server.utils.PaymentState;
+import com.springbazaar.server.utils.ProductSize;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +41,11 @@ public class OrdersEntity {
     private String razorPayOrderId;
     @Column(name = "razorpay_signature")
     private String razorPaySignature;
+    @Column(name="productSize")
+    @Enumerated(EnumType.STRING)
+    private ProductSize productSize;
+    @Column(name = "orderValue")
+    private float orderValue;
 
     @JsonIgnore
     @ManyToOne
