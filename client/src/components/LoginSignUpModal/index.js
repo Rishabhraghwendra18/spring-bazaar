@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { setCookie } from 'cookies-next';
+import { setCookie,getCookie,deleteCookie } from 'cookies-next';
 import { Modal, Box, Typography, Alert, Snackbar, Link } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./index.css";
@@ -24,6 +24,7 @@ function LoginSignUpModal({ open, handleClose }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [snackBarData, setSnackBarData] = useState({open:false,messageType:"",message:""});
   const [isLoading, setIsLoading] = useState(false);
+  const isLoggedIn = getCookie("Authorization");
   const {
     register,
     handleSubmit,
@@ -67,6 +68,10 @@ function LoginSignUpModal({ open, handleClose }) {
       setSnackBarData({open:true,messageType:"error",message:"Unable to login"})
     }
   };
+  const handleLogOut = () =>{
+    deleteCookie("Authorization")
+    handleClose();
+  }
 
   return (
     <Modal
@@ -76,126 +81,128 @@ function LoginSignUpModal({ open, handleClose }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography className="modal-title">
-          {isSignUp ? "Sign Up" : "Login"}
-        </Typography>
-        {isSignUp ? (
-          <form onSubmit={handleSubmit(onSignUp)} className="modal-form">
-            <div className="input-container">
-            <label htmlFor="name" className="input-label">
-              Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              {...register("name")}
-              className="modal-input"
-            />
-          </div>
-          <div className="input-container">
-            <label htmlFor="email" className="input-label">
-              Email *
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              // value={formData.email}
-              // onChange={handleChange}
-              {...register("email",{required:true})}
-              className="modal-input"
-              required
-            />
-          </div>
-          <div className="input-container">
-            <label htmlFor="password" className="input-label">
-              Password *
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              {...register("password", { required: true })}
-              // value={formData.password}
-              // onChange={handleChange}
-              className="modal-input"
-              required
-            />
-          </div>
-          <div className="input-container">
-            <label htmlFor="phoneNo" className="input-label">
-              Phone Number *
-            </label>
-            <input
-              id="phoneNo"
-              name="phoneNo"
-              type="number"
-              {...register("phoneNo", { required: true })}
-              // value={formData.password}
-              // onChange={handleChange}
-              className="modal-input"
-              required
-            />
-          </div>
-          <CustomButton type={"submit"}>Sign Up</CustomButton>
-          <Typography className="modal-switch-text">
-            Already have an account? {" "}
-            <Link
-              onClick={()=>setIsSignUp(false)}
-              href="#"
-              className="modal-switch-link"
-            >
-              Log In here.
-            </Link>
-          </Typography>
-        </form>
+        {isLoggedIn !=null ? (
+          <Box>
+            <Typography className="modal-title">Do you want to Log out?</Typography>
+            <Box display="flex" justifyContent="space-around" mt={2} gap={"0.8rem"}>
+              <CustomButton variant="outlined" style={{backgroundColor:'white',color:'black',flex:1}} onClick={handleClose}>No</CustomButton>
+              <CustomButton style={{backgroundColor:'red',color:'white',flex:1}} onClick={handleLogOut}>Ok</CustomButton>
+            </Box>
+          </Box>
         ) : (
-          <form onSubmit={handleSubmit(onLogIn)} className="modal-form">
-            <div className="input-container">
-              <label htmlFor="email" className="input-label">
-                Email *
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                // value={formData.email}
-                // onChange={handleChange}
-                {...register("email",{required:true})}
-                className="modal-input"
-                required
-              />
-            </div>
-            <div className="input-container">
-              <label htmlFor="password" className="input-label">
-                Password *
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                {...register("password", { required: true })}
-                // value={formData.password}
-                // onChange={handleChange}
-                className="modal-input"
-                required
-              />
-            </div>
-            <CustomButton type={"submit"}>{isLoading ? "Loging...":"Log In"}</CustomButton>
-            <Typography className="modal-switch-text">
-              Don't have an account? {" "}
-              <Link
-                onClick={()=>setIsSignUp(true)}
-                href="#"
-                className="modal-switch-link"
-              >
-                {isLoading ? "Creating Account...":"Sign Up here"}
-              </Link>
+          <Box>
+            <Typography className="modal-title">
+              {isSignUp ? "Sign Up" : "Login"}
             </Typography>
-          </form>
+            {isSignUp ? (
+              <form onSubmit={handleSubmit(onSignUp)} className="modal-form">
+                <div className="input-container">
+                  <label htmlFor="name" className="input-label">
+                    Name
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    {...register("name")}
+                    className="modal-input"
+                  />
+                </div>
+                <div className="input-container">
+                  <label htmlFor="email" className="input-label">
+                    Email *
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    {...register("email", { required: true })}
+                    className="modal-input"
+                    required
+                  />
+                </div>
+                <div className="input-container">
+                  <label htmlFor="password" className="input-label">
+                    Password *
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    {...register("password", { required: true })}
+                    className="modal-input"
+                    required
+                  />
+                </div>
+                <div className="input-container">
+                  <label htmlFor="phoneNo" className="input-label">
+                    Phone Number *
+                  </label>
+                  <input
+                    id="phoneNo"
+                    name="phoneNo"
+                    type="number"
+                    {...register("phoneNo", { required: true })}
+                    className="modal-input"
+                    required
+                  />
+                </div>
+                <CustomButton type={"submit"}>{isLoading ? "Signing Up..." : "Sign Up"}</CustomButton>
+                <Typography className="modal-switch-text">
+                  Already have an account? {" "}
+                  <Link
+                    onClick={() => setIsSignUp(false)}
+                    href="#"
+                    className="modal-switch-link"
+                  >
+                    Log In here.
+                  </Link>
+                </Typography>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit(onLogIn)} className="modal-form">
+                <div className="input-container">
+                  <label htmlFor="email" className="input-label">
+                    Email *
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    {...register("email", { required: true })}
+                    className="modal-input"
+                    required
+                  />
+                </div>
+                <div className="input-container">
+                  <label htmlFor="password" className="input-label">
+                    Password *
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    {...register("password", { required: true })}
+                    className="modal-input"
+                    required
+                  />
+                </div>
+                <CustomButton type={"submit"}>{isLoading ? "Logging in..." : "Log In"}</CustomButton>
+                <Typography className="modal-switch-text">
+                  Don't have an account? {" "}
+                  <Link
+                    onClick={() => setIsSignUp(true)}
+                    href="#"
+                    className="modal-switch-link"
+                  >
+                    Sign Up here.
+                  </Link>
+                </Typography>
+              </form>
+            )}
+            {snackBarData?.open && <span className={`snackbar-message ${snackBarData?.messageType == "error" ? "snackbar-message-red" : "snackbar-message-green"}`}>{snackBarData?.message}</span>}
+          </Box>
         )}
-        {snackBarData?.open && <span className={`snackbar-message ${snackBarData?.messageType == "error"?"snackbar-message-red":"snackbar-message-green"}`}>{snackBarData?.message}</span>}
       </Box>
     </Modal>
   );

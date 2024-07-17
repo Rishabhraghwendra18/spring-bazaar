@@ -10,6 +10,7 @@ function Navbar() {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const handleModalOpen = () =>{
     setModalOpen(!modalOpen);
   }
