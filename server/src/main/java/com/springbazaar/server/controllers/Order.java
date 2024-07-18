@@ -38,7 +38,6 @@ public class Order {
     }
     @PostMapping("/purchase")
     public RazorpayCreateOrderResponse createOrder(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwtToken){
-        System.out.println("Order in controller: "+orderRequest.getSize());
         return orderService.createOrder(orderRequest,jwtToken);
     }
     @PutMapping("/purchase")

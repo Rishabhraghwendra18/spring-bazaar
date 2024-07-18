@@ -8,11 +8,10 @@ import {
   Link,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import Backdrop from "../CustomBackdrop";
-import "./index.css";
 import { useRouter } from 'next/navigation'
 import { createOrder, verifyAndUpdateOrder } from "@/services/order";
 import CustomButton from "../CustomButton";
+import "./index.css";
 
 const style = {
   position: "absolute",
@@ -128,7 +127,10 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
         orderValue: Math.round(totalCost),
         size:items[0]?.size
       };
-      payload.itemIds = items?.map((item)=>item.id);
+      payload.productDetails = items?.map((item)=>({
+        itemId:item.id,
+        size:item?.size
+      }));
 
       const response = await createOrder(payload);
       console.log("response: ", response.data);

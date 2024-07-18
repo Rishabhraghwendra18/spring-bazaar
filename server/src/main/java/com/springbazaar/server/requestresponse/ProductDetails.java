@@ -6,15 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRequest {
-    private String deliveryAddress;
-    private int pinCode;
-    private float orderValue;
-    private List<ProductDetails> productDetails;
+public class ProductDetails{
+    private Integer itemId;
+    private ProductSize size;
 }

@@ -51,9 +51,9 @@ public class OrderService {
 
         Integer totalOrdersId=0;
         List<Integer> orderIdsList = new ArrayList<>();
-        for(Integer itemId: orderRequest.getItemIds()){
+        for(ProductDetails product: orderRequest.getProductDetails()){
             //        Updating Item Quantity
-            Optional<InventoryEntity> itemQuantityUpdate = inventoryRepository.findById(itemId);
+            Optional<InventoryEntity> itemQuantityUpdate = inventoryRepository.findById(product.getItemId());
             if(itemQuantityUpdate.isPresent() && itemQuantityUpdate.get().getItemQuantity() == 0) return null;
             if (itemQuantityUpdate.isPresent() && itemQuantityUpdate.get().getItemQuantity() - 1 >= 0){
                 itemQuantityUpdate.get().setItemQuantity(itemQuantityUpdate.get().getItemQuantity()-1);
@@ -67,13 +67,13 @@ public class OrderService {
             order.setDeliveryAddress(orderRequest.getDeliveryAddress());
             order.setPinCode(orderRequest.getPinCode());
             order.setPaymentState(PaymentState.CREATED);
-            order.setProductSize(orderRequest.getSize());
+            order.setProductSize(product.getSize());
             order.setOrderValue(orderRequest.getOrderValue());
 
             InventoryEntity item = new InventoryEntity();
-            item.setId(itemId);
+            item.setId(product.getItemId());
             order.setItemId(item);
-            totalOrdersId+=itemId;
+            totalOrdersId+= product.getItemId();
 
 //        Saving the order
             System.out.println("orders object: "+order.toString());

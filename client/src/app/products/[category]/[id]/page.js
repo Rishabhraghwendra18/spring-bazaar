@@ -16,7 +16,7 @@ import { getProductById } from "@/services/home";
 function Product({ params }) {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedImage, setSelectedImage] = useState(productPhoto1);
-  const [selectedSize, setSelectedSize] = useState("Medium");
+  const [selectedSize, setSelectedSize] = useState("MEDIUM");
   const [productDetails, setProductDetails] = useState({});
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const sizes =[
