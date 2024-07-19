@@ -14,7 +14,9 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-title"><Link href={"/"}>Spring Bazaar <span className="seller-dashboard-text">Seller Dashboard</span></Link></div>
       <ul className="navbar-links">
+        <Link href={"/dashboard"} className="dashboard-link">
         <li>Dashboard</li>
+        </Link>
       </ul>
       {/* <input className="search-bar" type="text" placeholder="Search products" /> */}
       <div className="navbar-icons">

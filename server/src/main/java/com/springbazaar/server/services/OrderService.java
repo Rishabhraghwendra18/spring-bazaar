@@ -153,7 +153,6 @@ public class OrderService {
         }
     }
 
-    @NotNull
     private static OrdersEntity getOrdersEntity(RazorpayOrderUpdateRequest razorpayOrderUpdateRequest, Optional<OrdersEntity> order,PaymentState paymentState) {
         OrdersEntity orderEntity = order.orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Order with order id: "+ razorpayOrderUpdateRequest.getOrderIds()+" not found"));
         orderEntity.setPaymentState(paymentState);
@@ -165,7 +164,7 @@ public class OrderService {
 
     public List<OrderWithItemIdResponse> getAllSellerOrders(String token){
         String userId = jwtUtil.getSubjectFromToken(token);
-        return orderRepository.findOrdersBySellerId(token);
+        return orderRepository.findOrdersBySellerId("rishabh2@test.com");
     }
     public SellerDashboardResponse getSellerDashboardDetails(String jwtToken){
         String userId = jwtUtil.getSubjectFromToken(jwtToken);
@@ -173,5 +172,13 @@ public class OrderService {
         Integer completedOrders = orderRepository.countByOrderCompletedByStatusBySellerId(userId,true);
         Integer newOrders = orderRepository.countByOrderCompletedByStatusBySellerId(userId,false);
         return new SellerDashboardResponse(totalOrders,completedOrders,newOrders);
+    }
+    public OrdersEntity getOrderByOrderId(Integer id){
+        return orderRepository.findById(id).orElseThrow(()->new ApplicationException(HttpStatus.NOT_FOUND.value(), "Can't find order with order id: "+id));
+    }
+    public OrdersEntity updateOrder(Integer id,SellerOrderUpdateRequest order){
+        OrdersEntity ordersEntity = orderRepository.findById(id).orElseThrow(()->new ApplicationException(HttpStatus.NOT_FOUND.value(), "Order with order id: "+id+"cannot be found"));
+        ordersEntity.setCompleted(order.isCompleted());
+        return orderRepository.save(ordersEntity);
     }
 }

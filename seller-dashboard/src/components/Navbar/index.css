@@ -6,6 +6,10 @@
   position: sticky;
   top: 0;
 }
+.dashboard-link{
+  text-decoration: none;
+  color: black;
+}
 
 .navbar-title {
   font-family: "Integral CF", sans-serif;

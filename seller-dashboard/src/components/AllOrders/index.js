@@ -81,7 +81,7 @@ function AllOrders() {
             {allOrders?.map((order) => (
               <StyledTableRow
                 key={order.orderId}
-                onClick={() => router.push(`/dashboard/${order.id}`)}
+                onClick={() => router.push(`/dashboard/${order.orderId}`)}
                 style={{ cursor: "pointer" }}
               >
                 <StyledTableCell component="th" scope="row">

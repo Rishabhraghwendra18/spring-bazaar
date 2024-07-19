@@ -50,9 +50,21 @@ public class Order {
     public List<OrderWithItemIdResponse> getAllSellerOrders(@RequestHeader("Authorization") String jwtToken){
         return orderService.getAllSellerOrders(jwtToken);
     }
+    @GetMapping("/getOrders/{id}")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public OrdersEntity getOrderById( @PathVariable Integer id){
+        return orderService.getOrderByOrderId(id);
+    }
+    @PutMapping("/getOrders/{id}")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public OrdersEntity updateOrder(@PathVariable Integer id ,SellerOrderUpdateRequest order){
+        System.out.println("orders: "+order);
+        return orderService.updateOrder(id,order);
+    }
     @GetMapping("/sellerdashboard")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public SellerDashboardResponse getSellerDashboardDetails(@RequestHeader("Authorization") String jwtToken){
         return orderService.getSellerDashboardDetails(jwtToken);
     }
+
 }
