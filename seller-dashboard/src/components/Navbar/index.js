@@ -13,12 +13,9 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-title"><Link href={"/"}>Spring Bazaar <span className="seller-dashboard-text">Seller Dashboard</span></Link></div>
-      {/* <ul className="navbar-links">
-        <li>Shop</li>
-        <li>On Sale</li>
-        <li>New Arrivals</li>
-        <li>Brands</li>
-      </ul> */}
+      <ul className="navbar-links">
+        <li>Dashboard</li>
+      </ul>
       {/* <input className="search-bar" type="text" placeholder="Search products" /> */}
       <div className="navbar-icons">
         {/* <Link href={"/cart"}>

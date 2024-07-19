@@ -1,7 +1,6 @@
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 10px 90px;
   background-color: white;
   position: sticky;
@@ -16,6 +15,7 @@
 }
 .seller-dashboard-text{
   font-size: 16px;
+  font-weight: normal;
 }
 
 .navbar-title > a{
@@ -27,6 +27,7 @@
 .navbar-links {
   display: flex;
   list-style: none;
+  margin-left: 1.3rem;
 }
 
 .navbar-links li {
@@ -53,6 +54,7 @@
 .navbar-icons {
   display: flex;
   align-items: center;
+  margin-left: auto;
 }
 
 .navbar-icons > * {
