@@ -165,6 +165,13 @@ public class OrderService {
 
     public List<OrderWithItemIdResponse> getAllSellerOrders(String token){
         String userId = jwtUtil.getSubjectFromToken(token);
-        return orderRepository.findOrdersBySellerId(userId);
+        return orderRepository.findOrdersBySellerId(token);
+    }
+    public SellerDashboardResponse getSellerDashboardDetails(String jwtToken){
+        String userId = jwtUtil.getSubjectFromToken(jwtToken);
+        Integer totalOrders = orderRepository.countOrdersBySellerId(userId);
+        Integer completedOrders = orderRepository.countByOrderCompletedByStatusBySellerId(userId,true);
+        Integer newOrders = orderRepository.countByOrderCompletedByStatusBySellerId(userId,false);
+        return new SellerDashboardResponse(totalOrders,completedOrders,newOrders);
     }
 }

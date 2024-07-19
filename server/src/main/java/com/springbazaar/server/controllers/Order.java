@@ -50,4 +50,9 @@ public class Order {
     public List<OrderWithItemIdResponse> getAllSellerOrders(@RequestHeader("Authorization") String jwtToken){
         return orderService.getAllSellerOrders(jwtToken);
     }
+    @GetMapping("/sellerdashboard")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public SellerDashboardResponse getSellerDashboardDetails(@RequestHeader("Authorization") String jwtToken){
+        return orderService.getSellerDashboardDetails(jwtToken);
+    }
 }

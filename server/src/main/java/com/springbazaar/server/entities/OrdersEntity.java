@@ -46,6 +46,8 @@ public class OrdersEntity {
     private ProductSize productSize;
     @Column(name = "orderValue")
     private float orderValue;
+    @Column(name = "isCompleted")
+    private boolean isCompleted;
 
     @JsonIgnore
     @ManyToOne
