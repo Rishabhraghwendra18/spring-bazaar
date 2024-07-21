@@ -14,6 +14,7 @@ import com.springbazaar.server.utils.JwtUtil;
 import com.springbazaar.server.utils.PaymentState;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -173,8 +174,15 @@ public class OrderService {
         Integer newOrders = orderRepository.countByOrderCompletedByStatusBySellerId(userId,false);
         return new SellerDashboardResponse(totalOrders,completedOrders,newOrders);
     }
-    public OrdersEntity getOrderByOrderId(Integer id){
-        return orderRepository.findById(id).orElseThrow(()->new ApplicationException(HttpStatus.NOT_FOUND.value(), "Can't find order with order id: "+id));
+    public OrderDetailsResponse getOrderByOrderId(Integer id){
+        OrdersEntity order = orderRepository.findById(id).orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Can't find order with order id: " + id));
+        OrderDetailsResponse response = new OrderDetailsResponse();
+        BeanUtils.copyProperties(order,response);
+        InventoryEntity product = inventoryRepository.findById(order.getItemId().getId()).orElseThrow(()-> new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"));
+        response.setProductTitle(product.getItemTitle());
+        response.setProductPhotoUrl(product.getItemPhoto());
+        response.setFileName(product.getFileName());
+        return response;
     }
     public OrdersEntity updateOrder(Integer id,SellerOrderUpdateRequest order){
         OrdersEntity ordersEntity = orderRepository.findById(id).orElseThrow(()->new ApplicationException(HttpStatus.NOT_FOUND.value(), "Order with order id: "+id+"cannot be found"));

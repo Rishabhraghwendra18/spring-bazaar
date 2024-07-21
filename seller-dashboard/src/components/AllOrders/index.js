@@ -75,6 +75,7 @@ function AllOrders() {
               <StyledTableCell>Order Id</StyledTableCell>
               <StyledTableCell>Product Title</StyledTableCell>
               <StyledTableCell align="right">Buyer Id</StyledTableCell>
+              <StyledTableCell align="right">Order Status</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -85,7 +86,8 @@ function AllOrders() {
                 style={{ cursor: "pointer" }}
               >
                 <StyledTableCell component="th" scope="row">
-                <Image src={`/product.fileName`} alt={order.item.itemTitle} className="table-image" width={100} height={100}/>
+                  {console.log("phto: ",order?.item?.itemPhoto)}
+                <Image src={order?.item?.itemPhoto} alt={order.item.itemTitle} className="table-image" width={100} height={100}/>
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
                   {order.orderId}
@@ -94,6 +96,7 @@ function AllOrders() {
                 {order.item.itemTitle}
                 </StyledTableCell>
                 <StyledTableCell align="right">{order.buyerId}</StyledTableCell>
+                <StyledTableCell align="right" style={order.completed ? {color:'green'}:{color:'red'}}>{order.completed ? "Order Completed":"Pending"}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

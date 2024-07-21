@@ -23,7 +23,7 @@ function ProductDetails({ params }) {
   };
   const handleCloseSnackBar = () =>setOpenSnackBar({...openSnackBar,open:false});
   const handleMarkAsComplete = async()=>{
-    const payload = {isCompleted:true};
+    const payload = {completed:true};
     try {
       await updateOrder(params?.id,payload);
       setOpenSnackBar({open:true,type:"success",message:`Order with order id ${params.id} updated successfully`})
@@ -47,7 +47,7 @@ function ProductDetails({ params }) {
             <strong>Order Id:</strong> {params.id}
           </p>
           <p>
-            <strong>Product Title:</strong> {orderDetails?.itemId?.itemTitle}
+            <strong>Product Title:</strong> {orderDetails?.productTitle}
           </p>
           <p>
             <strong>Delivery Address:</strong> {orderDetails?.deliveryAddress}

@@ -16,6 +16,7 @@ public class OrderWithItemIdResponse {
     private String buyerId;
     private String deliveryAddress;
     private int pinCode;
+    private boolean isCompleted;
     private ProductDetails productDetails;
     private InventoryEntity item;
 }

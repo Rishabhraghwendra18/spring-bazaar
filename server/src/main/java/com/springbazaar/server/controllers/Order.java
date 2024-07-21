@@ -52,13 +52,12 @@ public class Order {
     }
     @GetMapping("/getOrders/{id}")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public OrdersEntity getOrderById( @PathVariable Integer id){
+    public OrderDetailsResponse getOrderById( @PathVariable Integer id){
         return orderService.getOrderByOrderId(id);
     }
     @PutMapping("/getOrders/{id}")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public OrdersEntity updateOrder(@PathVariable Integer id ,SellerOrderUpdateRequest order){
-        System.out.println("orders: "+order);
+    public OrdersEntity updateOrder(@PathVariable Integer id ,@RequestBody SellerOrderUpdateRequest order){
         return orderService.updateOrder(id,order);
     }
     @GetMapping("/sellerdashboard")
