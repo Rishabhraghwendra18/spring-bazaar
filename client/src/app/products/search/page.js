@@ -15,6 +15,7 @@ import { searchProductByTitle } from '@/services/home';
 function Category({params}) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [value, setValue] = useState([0, 2000]);
 
   const [products, setProducts] = useState([]);
   console.log("params: ",params)
@@ -39,6 +40,10 @@ function Category({params}) {
   useEffect(() => {
     fetchProducts();
   }, [])
+  const handleChangeSlider = (_,value)=>{
+    console.log("value: ",value)
+    setValue(value);
+  }
 
   return (
     <div className='container'>
@@ -49,7 +54,7 @@ function Category({params}) {
                 <hr className="divider" />
                 <div className='filter'>
                 <h4>Price</h4>
-                <CustomSlider/>
+                <CustomSlider handleChange={handleChangeSlider} value={value}/>
                 <CustomButton>Apply Filter</CustomButton>
                 </div>
               </Card>
@@ -58,7 +63,7 @@ function Category({params}) {
               <h2>Search</h2>
               <div className='products'>
                 {products.map((product,index)=>(
-                  <ItemCard image={product.fileName} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
+                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
                     router.push(`/products/${searchParams.get("search")}/${product.id}`)
                   }}/>
                 ))}

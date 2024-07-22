@@ -4,10 +4,6 @@ import Card from '@/components/Card'
 import ItemCard from '@/components/ItemCard';
 import { useRouter } from 'next/navigation'
 import {CircularProgress} from "@mui/material";
-import product1 from "../../../assets/Frame 32.png";
-import product2 from "../../../assets/Frame 33.png";
-import product3 from "../../../assets/Frame 34.png";
-import product4 from "../../../assets/Frame 38.png";
 import CustomSlider from '@/components/CustomSlider';
 import "./page.css"
 import CustomButton from '@/components/CustomButton';
@@ -51,25 +47,6 @@ function Category({params}) {
     console.log("filtered: ",filteredProducts)
     setProducts(filteredProducts);
   }
-  
- 
-  // const products = [
-  //   {
-  //     id: 1,
-  //     name: "T-Shirt With Tape Details",
-  //     image: product1,
-  //     price: "$100",
-  //   },
-  //   { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
-  //   { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
-  //   { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
-  //   { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
-  //   { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
-  //   { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
-  //   { id: 2, name: "Skinny Fit Jeans", image: product2, price: "$120" },
-  //   { id: 3, name: "Checkered Shirt", image: product3, price: "$150" },
-  //   { id: 4, name: "Sleeve Striped T-Shirt", image: product4, price: "$200" },
-  // ];
 
   return (
     <div className='container'>
@@ -92,7 +69,7 @@ function Category({params}) {
               <h2>{params.category}</h2>
               <div className='products'>
                 {products.map((product,index)=>(
-                  <ItemCard image={product.fileName} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
+                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
                     router.push(`/products/${params.category}/${product.id}`)
                   }}/>
                 ))}
