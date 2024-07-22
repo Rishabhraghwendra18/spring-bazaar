@@ -1,5 +1,7 @@
 package com.springbazaar.server.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.springbazaar.server.entities.InventoryEntity;
 import com.springbazaar.server.exceptionHandlers.ApplicationException;
 import com.springbazaar.server.repository.InventoryRepository;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -27,6 +30,8 @@ public class InventoryService {
     private final JwtUtil jwtUtil;
     @Value("${project.image}")
     private String path;
+    @Value("${cloudinary.url}")
+    private String CLOUDINARY_URL;
 
     @Autowired
     public InventoryService(InventoryRepository inventoryRepository, JwtUtil jwtUtil) {
@@ -89,6 +94,35 @@ public class InventoryService {
             f.mkdir(); // create folder if doesn't exist
         }
         Files.copy(file.getInputStream(), Paths.get(fullFilePath)); // save file at the path
-        return f.getAbsoluteFile()+"/"+userId+'-'+originalFileName;
+
+        Cloudinary cloudinary = new Cloudinary(CLOUDINARY_URL);
+        cloudinary.config.secure = true;
+        Map params = ObjectUtils.asMap(
+                "use_filename", true,
+                "unique_filename", false,
+                "overwrite", true
+        );
+        String uploadedPhotoUrl;
+        String localFilePath=f.getAbsoluteFile()+"/"+userId+'-'+originalFileName;
+        try{
+            uploadedPhotoUrl = (String) cloudinary.uploader().upload(localFilePath,params).get("secure_url");
+            deleteFileFromLocal(localFilePath);
+            return uploadedPhotoUrl;
+        }catch(Exception e){
+            System.out.println("Exception while uploading image to cloudinary: "+e.toString());
+            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Not able to upload Product Photo");
+        }
+    }
+    private void deleteFileFromLocal(String filePath){
+        File file = new File(filePath);
+        if (file.exists()){
+            boolean isDeleted = file.delete();
+            if (!isDeleted){
+                System.out.println("Not able to delete file");
+            }
+        }
+        else{
+            System.out.println("File don't exist at path");
+        }
     }
 }
