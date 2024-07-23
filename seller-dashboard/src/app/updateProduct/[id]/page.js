@@ -10,7 +10,7 @@ function ProductDetails({ params }) {
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
   const [ProductDetails, setProductDetails] = useState({});
-  const [openSnackBar, setOpenSnackBar] = useState({ open: false, message: "" });
+  const [openSnackBar, setOpenSnackBar] = useState({ open: false, type:'' ,message: "" });
 
   const methods = useForm({
     defaultValues: {
@@ -37,10 +37,10 @@ function ProductDetails({ params }) {
     try {
       const response = await updateInventoryProduct(formData);
       console.log("response: ", response.data);
-      setOpenSnackBar({ open: true, message: "Product updated successfully" });
+      setOpenSnackBar({ open: true,type:'success', message: "Product updated successfully" });
     } catch (error) {
       console.log("Error while updating product details: ", error);
-      setOpenSnackBar({ open: true, message: "Error while updating product details" });
+      setOpenSnackBar({ open: true, type:'error',message: "Error while updating product details" });
     }
   };
 
@@ -58,12 +58,11 @@ function ProductDetails({ params }) {
       setValue("image", data?.itemPhoto);
     } catch (error) {
       console.log("Error while fetching product details: ", error);
-      setOpenSnackBar({ open: true, message: "Error while fetching product details" });
+      setOpenSnackBar({ open: true, type:'error',message: "Error while fetching product details" });
     }
   };
 
   useEffect(() => {
-    console.log("Fetching product details");
     fetchProductDetails();
   }, [params?.id]);
 
@@ -199,7 +198,7 @@ function ProductDetails({ params }) {
         >
           <Alert
             onClose={() => setOpenSnackBar({ ...openSnackBar, open: false })}
-            severity="error"
+            severity={openSnackBar.type}
             variant="filled"
             sx={{ width: "100%" }}
           >
