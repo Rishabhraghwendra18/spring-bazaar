@@ -24,9 +24,14 @@ public class Inventory {
     public List<InventoryEntity> getSellerAllProducts(@RequestHeader("Authorization") String jwtToken){
         return inventoryService.getAllSellerProducts(jwtToken);
     }
+    @GetMapping("/product/{id}")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public InventoryEntity getProductById(@PathVariable Integer id){
+        return inventoryService.getProductById(id);
+    }
     @PostMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public InventoryEntity addProduct(@RequestParam("file") MultipartFile file, @RequestParam("itemQuantity") int itemQuantity,@RequestParam("itemTitle") String itemTitle,@RequestParam("itemDescription") String itemDescription,@RequestParam("itemPrice") float itemPrice, @RequestHeader("Authorization") String jwtToken){
+    public InventoryEntity addProduct(@RequestParam("file") MultipartFile file,@RequestParam("itemQuantity") int itemQuantity,@RequestParam("itemTitle") String itemTitle,@RequestParam("itemDescription") String itemDescription,@RequestParam("itemPrice") float itemPrice, @RequestHeader("Authorization") String jwtToken){
         InventoryEntity inventoryEntity = new InventoryEntity();
         inventoryEntity.setItemQuantity(itemQuantity);
         inventoryEntity.setItemTitle(itemTitle);
@@ -36,8 +41,8 @@ public class Inventory {
     }
     @PutMapping("/product")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public InventoryEntity updateProduct(@RequestBody InventoryEntity inventoryEntity){
-        return inventoryService.updateProduct(inventoryEntity);
+    public InventoryEntity updateProduct(@RequestParam(value = "file",required = false) MultipartFile file,@RequestParam("productId") Integer id,@RequestParam("itemQuantity") Integer itemQuantity,@RequestParam("itemTitle") String itemTitle,@RequestParam("itemDescription") String itemDescription,@RequestParam("itemPrice") float itemPrice){
+        return inventoryService.updateProduct(file,id,itemQuantity,itemDescription,itemPrice,itemTitle);
     }
     @DeleteMapping("/product/{id}")
     @PreAuthorize("hasRole('ROLE_SELLER')")

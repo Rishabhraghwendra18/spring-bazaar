@@ -10,5 +10,15 @@ async function addProductInInventory(payload) {
 async function getSellerAllProducts() {
     return await apiClient.get("/inventory/product");
 }
+async function getProductById(id) {
+    return await apiClient.get(`/inventory/product/${id}`);
+}
+async function updateInventoryProduct(payload) {
+    return await apiClient.put("/inventory/product",payload,{
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    },{withCredentials:true});
+}
 
-export {getSellerAllProducts,addProductInInventory}
+export {getSellerAllProducts,addProductInInventory,updateInventoryProduct,getProductById}

@@ -32,30 +32,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
-function createData(id, name, calories, fat, carbs, protein) {
-  return { id, name, calories, fat, carbs, protein };
-}
 
 function Inventory() {
   const router = useRouter();
   const [productsList, setProductsList] = useState([]);
+
   const getSellerProducts = async () => {
     try {
       const response = await getSellerAllProducts();
-      const { data } = response;
-      setProductsList(data);
+      setProductsList(response.data);
     } catch (error) {
-      console.log("error while getting seller all products: ", error);
+      console.error("Error fetching seller products:", error);
     }
   };
-  useEffect(()=>{
+
+  useEffect(() => {
     getSellerProducts();
-  },[])
+  }, []);
+
   return (
     <div className="inventory-container">
       <h1 className="section-title">Inventory</h1>
@@ -84,17 +82,17 @@ function Inventory() {
             {productsList.map((product) => (
               <StyledTableRow
                 key={product.itemTitle}
-                // onClick={() => router.push(`/dashboard/${product.id}`)}
+                onClick={() => router.push(`/updateProduct/${product.id}`)}
                 style={{ cursor: "pointer" }}
               >
                 <StyledTableCell component="th" scope="row">
-                <Image src={product.itemPhoto} alt={product.itemTitle} className="table-image" width={100} height={100}/>
+                  <Image src={product.itemPhoto || '/default-image.png'} alt={product.itemTitle} className="table-image" width={100} height={100} />
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
                   {product.itemTitle}
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
-                {product.itemDescription}
+                  {product.itemDescription}
                 </StyledTableCell>
                 <StyledTableCell align="right">{product.itemQuantity}</StyledTableCell>
                 <StyledTableCell align="right">Rs {product.itemPrice}</StyledTableCell>

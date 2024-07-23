@@ -46,6 +46,9 @@ public class InventoryService {
             throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage());
         }
     }
+    public InventoryEntity getProductById(Integer id){
+        return inventoryRepository.findById(id).orElseThrow(()-> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Product with id: "+id+" not found"));
+    }
     public InventoryEntity addProduct(MultipartFile file, InventoryEntity inventoryEntity, String jwtToken){
         String sellerId=jwtUtil.getSubjectFromToken(jwtToken);
         String filePath = null;
@@ -64,19 +67,26 @@ public class InventoryService {
         System.out.println("made the entity: "+inventoryEntity.toString());
         return inventoryRepository.save(inventoryEntity);
     }
-    public InventoryEntity updateProduct(InventoryEntity inventoryEntity){
-        if (inventoryEntity.getId() == null){
-            throw new ApplicationException(HttpStatus.BAD_REQUEST.value(), "Product Id can't be null");
+    public InventoryEntity updateProduct(MultipartFile file,Integer id, Integer quantity,String description, float price,String title){
+        InventoryEntity item = inventoryRepository.findById(id).orElseThrow(()-> new ApplicationException(HttpStatus.NOT_FOUND.value(), "No such product found"));
+        String sellerId = item.getSellerId();
+        item.setItemQuantity(quantity);
+        item.setItemDescription(description);
+        item.setItemPrice(price);
+        item.setItemTitle(title);
+        if (file !=null){
+            try{
+                String fileName=sellerId+'-'+file.getOriginalFilename();
+                String filePath = uploadFile(sellerId,file);
+                item.setItemPhoto(filePath);
+                item.setFileName(fileName);
+
+            }catch(Exception e){
+                System.out.println("Error while updating product photo: "+e);
+                throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error while updating product photo");
+            }
         }
-        Optional<InventoryEntity> item = inventoryRepository.findById(inventoryEntity.getId());
-        if (item.isPresent()){
-            String sellerId = item.get().getSellerId();
-            inventoryEntity.setSellerId(sellerId);
-            return inventoryRepository.save(inventoryEntity);
-        }
-        else{
-            throw new ApplicationException(HttpStatus.NOT_FOUND.value(), "No such product found");
-        }
+        return inventoryRepository.save(item);
     }
     public InventoryEntity removeProduct(Integer id){
         Optional<InventoryEntity> item = inventoryRepository.findById(id);
