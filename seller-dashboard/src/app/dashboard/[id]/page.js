@@ -41,7 +41,7 @@ function ProductDetails({ params }) {
     <div className="order-details-page">
       <h1 className="order-heading">Order Details #{params.id}</h1>
       <div className="order-content">
-        <div className="order-image"></div>
+        <div className="order-image" style={{backgroundImage:`url(${orderDetails?.productPhotoUrl})`,backgroundSize:'fill',backgroundRepeat:'no-repeat'}}></div>
         <div className="order-info">
           <p>
             <strong>Order Id:</strong> {params.id}

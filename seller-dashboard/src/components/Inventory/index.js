@@ -41,13 +41,6 @@ function createData(id, name, calories, fat, carbs, protein) {
   return { id, name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData(1, "Frozen yoghurt", 159, 6.0),
-  createData(2, "Ice cream sandwich", 237, 9.0),
-  createData(3, "Eclair", 262, 16.0),
-  createData(4, "Cupcake", 305, 3.7),
-  createData(5, "Gingerbread", 356, 16.0),
-];
 function Inventory() {
   const router = useRouter();
   const [productsList, setProductsList] = useState([]);
@@ -91,11 +84,11 @@ function Inventory() {
             {productsList.map((product) => (
               <StyledTableRow
                 key={product.itemTitle}
-                onClick={() => router.push(`/dashboard/${product.id}`)}
+                // onClick={() => router.push(`/dashboard/${product.id}`)}
                 style={{ cursor: "pointer" }}
               >
                 <StyledTableCell component="th" scope="row">
-                <Image src={`/product.fileName`} alt={product.itemTitle} className="table-image" width={100} height={100}/>
+                <Image src={product.itemPhoto} alt={product.itemTitle} className="table-image" width={100} height={100}/>
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
                   {product.itemTitle}

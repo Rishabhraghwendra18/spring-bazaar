@@ -165,7 +165,7 @@ public class OrderService {
 
     public List<OrderWithItemIdResponse> getAllSellerOrders(String token){
         String userId = jwtUtil.getSubjectFromToken(token);
-        return orderRepository.findOrdersBySellerId("rishabh2@test.com");
+        return orderRepository.findOrdersBySellerId(userId);
     }
     public SellerDashboardResponse getSellerDashboardDetails(String jwtToken){
         String userId = jwtUtil.getSubjectFromToken(jwtToken);

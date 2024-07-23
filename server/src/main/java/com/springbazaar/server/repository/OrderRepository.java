@@ -2,6 +2,8 @@ package com.springbazaar.server.repository;
 
 import com.springbazaar.server.entities.OrdersEntity;
 import com.springbazaar.server.requestresponse.OrderWithItemIdResponse;
+import com.springbazaar.server.requestresponse.ProcessedPaymentsResponse;
+import com.springbazaar.server.utils.PaymentState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,4 +18,6 @@ public interface OrderRepository extends JpaRepository<OrdersEntity,Integer> {
     Integer countOrdersBySellerId(String sellerId);
     @Query("SELECT COUNT(*) FROM OrdersEntity o JOIN o.itemId i WHERE i.sellerId=?1 AND o.isCompleted=?2")
     Integer countByOrderCompletedByStatusBySellerId(String sellerId,boolean isCompleted);
+    @Query("SELECT o.orderId, o.paymentState, o.orderValue FROM OrdersEntity o JOIN o.itemId i WHERE i.sellerId = ?1 AND o.paymentState=?2")
+    List<ProcessedPaymentsResponse> findPaymentsWithPaymentState(String sellerId, PaymentState paymentState);
 }

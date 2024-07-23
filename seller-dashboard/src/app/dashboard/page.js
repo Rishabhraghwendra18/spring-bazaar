@@ -18,15 +18,12 @@ function Dashboard() {
             <div className={`side-bar-option ${selectedOption == "all_orders"?"selected-option":""}`} onClick={()=>setSelectedOption("all_orders")}>All orders</div>
             <hr className="divider" />
             <div className={`side-bar-option ${selectedOption == "inventory"?"selected-option":""}`} onClick={()=>setSelectedOption("inventory")}>Inventory</div>
-            <hr className="divider" />
-            <div className={`side-bar-option ${selectedOption == "payments"?"selected-option":""}`} onClick={()=>setSelectedOption("payments")}>Payments</div>
             </div>
         </div>
         <div className='order-management-container'>
             {selectedOption == "dashboard" && <OrdersAnalytics/>}
             {selectedOption == "all_orders" && <AllOrders/>}
             {selectedOption == "inventory" && <Inventory/>}
-            {selectedOption == "payments" && <Payments/>}
         </div>
     </div>
   )

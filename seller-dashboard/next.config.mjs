@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images:{
-        domains:["/home/rishabh/Documents/projects/spring-bazaar/client/public/images"],
-        path:"",
-        loader:'imgix'
+        remotePatterns:[
+            {
+                protocol:"https",
+                hostname:"res.cloudinary.com",
+                port:'',
+                pathname:'/dmil68pkd/**'
+            }
+        ]
     }
 };
 
