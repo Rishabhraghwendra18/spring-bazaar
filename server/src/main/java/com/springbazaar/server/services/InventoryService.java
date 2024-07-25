@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.springbazaar.server.entities.InventoryEntity;
 import com.springbazaar.server.exceptionHandlers.ApplicationException;
 import com.springbazaar.server.repository.InventoryRepository;
+import com.springbazaar.server.utils.CloudinaryUploadFiles;
 import com.springbazaar.server.utils.JwtUtil;
 import io.jsonwebtoken.JwtException;
 import jakarta.validation.Valid;
@@ -28,15 +29,13 @@ import java.util.Optional;
 public class InventoryService {
     private final InventoryRepository inventoryRepository;
     private final JwtUtil jwtUtil;
-    @Value("${project.image}")
-    private String path;
-    @Value("${cloudinary.url}")
-    private String CLOUDINARY_URL;
+    private final CloudinaryUploadFiles cloudinaryUploadFiles;
 
     @Autowired
-    public InventoryService(InventoryRepository inventoryRepository, JwtUtil jwtUtil) {
+    public InventoryService(InventoryRepository inventoryRepository, JwtUtil jwtUtil, CloudinaryUploadFiles cloudinaryUploadFiles) {
         this.inventoryRepository = inventoryRepository;
         this.jwtUtil=jwtUtil;
+        this.cloudinaryUploadFiles=cloudinaryUploadFiles;
     }
     public List<InventoryEntity> getAllSellerProducts(String jwtToken){
         try{
@@ -54,7 +53,7 @@ public class InventoryService {
         String filePath = null;
         String fileName=sellerId+'-'+file.getOriginalFilename();
         try{
-            filePath=uploadFile(sellerId,file);
+            filePath=cloudinaryUploadFiles.uploadFile(sellerId,file);
         }
         catch(Exception e){
             System.out.println("error in catch: "+e.toString());
@@ -77,7 +76,7 @@ public class InventoryService {
         if (file !=null){
             try{
                 String fileName=sellerId+'-'+file.getOriginalFilename();
-                String filePath = uploadFile(sellerId,file);
+                String filePath = cloudinaryUploadFiles.uploadFile(sellerId,file);
                 item.setItemPhoto(filePath);
                 item.setFileName(fileName);
 
@@ -95,44 +94,5 @@ public class InventoryService {
             return item.get();
         }
         return null;
-    }
-    private String uploadFile(String userId, MultipartFile file) throws IOException {
-        String originalFileName=file.getOriginalFilename(); // original file name
-        String fullFilePath = path + File.separator+ userId +'-'+originalFileName; // file name with user id to fetch easily
-        File f = new File(path);
-        if (!f.exists()){
-            f.mkdir(); // create folder if doesn't exist
-        }
-        Files.copy(file.getInputStream(), Paths.get(fullFilePath)); // save file at the path
-
-        Cloudinary cloudinary = new Cloudinary(CLOUDINARY_URL);
-        cloudinary.config.secure = true;
-        Map params = ObjectUtils.asMap(
-                "use_filename", true,
-                "unique_filename", false,
-                "overwrite", true
-        );
-        String uploadedPhotoUrl;
-        String localFilePath=f.getAbsoluteFile()+"/"+userId+'-'+originalFileName;
-        try{
-            uploadedPhotoUrl = (String) cloudinary.uploader().upload(localFilePath,params).get("secure_url");
-            deleteFileFromLocal(localFilePath);
-            return uploadedPhotoUrl;
-        }catch(Exception e){
-            System.out.println("Exception while uploading image to cloudinary: "+e.toString());
-            throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Not able to upload Product Photo");
-        }
-    }
-    private void deleteFileFromLocal(String filePath){
-        File file = new File(filePath);
-        if (file.exists()){
-            boolean isDeleted = file.delete();
-            if (!isDeleted){
-                System.out.println("Not able to delete file");
-            }
-        }
-        else{
-            System.out.println("File don't exist at path");
-        }
     }
 }
