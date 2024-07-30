@@ -1,5 +1,5 @@
 'use client'
-import {useState,useEffect} from 'react'
+import {useState,useEffect,Suspense} from 'react'
 import Card from '@/components/Card'
 import ItemCard from '@/components/ItemCard';
 import { useRouter,useSearchParams } from 'next/navigation'
@@ -74,4 +74,10 @@ function Category({params}) {
   )
 }
 
-export default Category
+export default function WrappedCategory(props) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Category {...props} />
+    </Suspense>
+  );
+}

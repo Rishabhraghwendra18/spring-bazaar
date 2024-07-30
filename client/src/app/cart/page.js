@@ -70,13 +70,13 @@ function Cart() {
           {items.map((item,index)=>{
             if (index !== items.length -1) {
               return (
-                <div className='item'>
+                <div className='item' key={index}>
                 <ItemCart item={item}/>
                 <hr className="divider" />
                 </div>
               )
             }
-            return <ItemCart item={item}/>;
+            return <ItemCart item={item} key={index}/>;
           })}
         </Card>
         <Card className="summary-card">

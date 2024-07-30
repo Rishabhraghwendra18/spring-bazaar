@@ -199,7 +199,7 @@ export default function Home() {
               <FaStar className="gold-star" />
             </div>
             <div className="review-name">{review.name}</div>
-            <div className="review-text">"{review.review}"</div>
+            <div className="review-text">&quot;{review.review}&quot;</div>
           </div>
         ))}
       </div>

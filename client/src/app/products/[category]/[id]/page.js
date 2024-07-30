@@ -162,7 +162,7 @@ function Product({ params }) {
                 <FaStar className="gold-star" />
               </div>
               <div className="review-name">ABC</div>
-              <div className="review-text">"ABCDEFGH"</div>
+              <div className="review-text">&quot;ABCDEFGH&quot;</div>
             </Card>
             <Card>
               <div className="review-stars">
@@ -173,7 +173,7 @@ function Product({ params }) {
                 <FaStar className="gold-star" />
               </div>
               <div className="review-name">ABC</div>
-              <div className="review-text">"ABCDEFGH"</div>
+              <div className="review-text">&quot;ABCDEFGH&quot;</div>
             </Card>
             <Card>
               <div className="review-stars">
@@ -184,7 +184,7 @@ function Product({ params }) {
                 <FaStar className="gold-star" />
               </div>
               <div className="review-name">ABC</div>
-              <div className="review-text">"ABCDEFGH"</div>
+              <div className="review-text">&quot;ABCDEFGH&quot;</div>
             </Card>
             <Card>
               <div className="review-stars">
@@ -195,7 +195,7 @@ function Product({ params }) {
                 <FaStar className="gold-star" />
               </div>
               <div className="review-name">ABC</div>
-              <div className="review-text">"ABCDEFGH"</div>
+              <div className="review-text">&quot;ABCDEFGH&quot;</div>
             </Card>
           </div>
         )}
