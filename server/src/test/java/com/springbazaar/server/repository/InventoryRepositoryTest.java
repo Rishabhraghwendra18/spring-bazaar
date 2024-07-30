@@ -1,16 +1,21 @@
 package com.springbazaar.server.repository;
 
 import com.springbazaar.server.entities.InventoryEntity;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,10 +26,31 @@ import static org.junit.jupiter.api.Assertions.*;
 class InventoryRepositoryTest {
     @Container
     @ServiceConnection
-    public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.37")).withUsername("root").withPassword("1").withDatabaseName("spring-bazaar");
+    public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>(DockerImageName.parse("mysql")).withUsername("root").withPassword("1").withDatabaseName("spring-bazaar").withStartupTimeout(Duration.ofMinutes(4));
 
     @Autowired
     private InventoryRepository repositoryTest;
+    @BeforeAll
+    static void beforeAll(){
+        System.out.println("starting mysql");
+        mySQLContainer.start();
+        printContainerLogs();
+    }
+    private static void printContainerLogs() {
+        String logs = mySQLContainer.getLogs();
+        System.out.println("Container logs:");
+        System.out.println(logs);
+    }
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+        registry.add("spring.datasource.password", mySQLContainer::getPassword);
+    }
+    @AfterAll
+    static void afterAll() {
+        mySQLContainer.stop();
+    }
     @Test
     void canEstablishConnectionTest(){
         assertTrue(mySQLContainer.isCreated());

@@ -15,7 +15,7 @@ apiClient.interceptors.request.use(
         return config;
     }
 
-    const token = getCookie("Authorization");
+    const token = getCookie("Seller-Authorization");
     if (token) {
       config.headers.Authorization = token;
     }

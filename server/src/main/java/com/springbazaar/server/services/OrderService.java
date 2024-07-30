@@ -36,7 +36,6 @@ public class OrderService {
 
     @Autowired
     public OrderService(OrderRepository orderRepository, InventoryRepository inventoryRepository,JwtUtil jwtUtil) {
-
         this.orderRepository = orderRepository;
         this.inventoryRepository=inventoryRepository;
         this.jwtUtil=jwtUtil;
@@ -85,6 +84,8 @@ public class OrderService {
 //        Creating Razorpay Order
         try{
             RazorpayClient razorpayClient = new RazorpayClient(this.razorpayKeyId,this.razorPayKeySecret);
+            System.out.println("razorpayKeyId: "+this.razorpayKeyId);
+            System.out.println("razorPayKeySecret: "+this.razorPayKeySecret);
             JSONObject razorPayOrderRequest = new JSONObject();
             razorPayOrderRequest.put("amount",orderRequest.getOrderValue()*100);
             razorPayOrderRequest.put("currency", "INR");

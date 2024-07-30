@@ -29,7 +29,7 @@ function LoginSignUpModal({ open, handleClose }) {
     messageType: "",
     message: "",
   });
-  const isLoggedIn = getCookie("Authorization");
+  const isLoggedIn = getCookie("Seller-Authorization");
   const {
     register,
     handleSubmit,
@@ -59,7 +59,7 @@ function LoginSignUpModal({ open, handleClose }) {
       const jwtToken = response.data?.token;
       const expirationTime = response.data?.expirationDate;
       if (jwtToken != null) {
-        setCookie("Authorization", `Bearer ${jwtToken}`, {
+        setCookie("Seller-Authorization", `Bearer ${jwtToken}`, {
           expires: new Date(expirationTime),
         });
         console.log("response data: ", jwtToken);
@@ -78,7 +78,7 @@ function LoginSignUpModal({ open, handleClose }) {
     }
   };
   const handleLogOut = () => {
-    deleteCookie("Authorization");
+    deleteCookie("Seller-Authorization");
     handleClose();
   };
 
