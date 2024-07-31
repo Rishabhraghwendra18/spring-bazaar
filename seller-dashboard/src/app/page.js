@@ -59,7 +59,7 @@ export default function Home() {
           </h1>
           <p className="hero-subtitle">
           Easily track your product listings, manage inventory, and view sales
-          analytics to optimize your store's performance.
+          analytics to optimize your store&#39;s performance.
           </p>
           <Button variant="contained" className="shop-button" onClick={handleModalOpen}>
             Log In/Sign Up Now

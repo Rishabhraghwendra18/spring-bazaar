@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class InventoryRepositoryTest {
     @Container
     @ServiceConnection
-    public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>(DockerImageName.parse("mysql")).withUsername("root").withPassword("1").withDatabaseName("spring-bazaar").withStartupTimeout(Duration.ofMinutes(4));
+    public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>(DockerImageName.parse("mysql")).withUsername("root").withPassword("").withDatabaseName("spring-bazaar").withStartupTimeout(Duration.ofMinutes(4));
 
     @Autowired
     private InventoryRepository repositoryTest;

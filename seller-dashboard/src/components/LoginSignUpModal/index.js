@@ -226,7 +226,7 @@ function LoginSignUpModal({ open, handleClose }) {
                 </div>
                 <CustomButton type={"submit"}>Log In</CustomButton>
                 <Typography className="modal-switch-text">
-                  Don't have an account?{" "}
+                  Don&#39;t have an account?{" "}
                   <Link
                     onClick={() => setIsSignUp(true)}
                     href="#"

@@ -3,7 +3,7 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 COPY package*.json .
-RUN npm ci
+RUN npm install
 COPY . .
 
 RUN npm run build
@@ -16,8 +16,8 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/public ./public
 
-RUN npm prune --production
-
 EXPOSE 3000
+
+RUN npm prune --production
 
 CMD npm start
