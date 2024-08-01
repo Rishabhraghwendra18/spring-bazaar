@@ -5,7 +5,7 @@ import ItemCard from '@/components/ItemCard';
 import { useRouter } from 'next/navigation'
 import {CircularProgress} from "@mui/material";
 import CustomSlider from '@/components/CustomSlider';
-import "./page.css"
+import styles from "./page.module.css"
 import CustomButton from '@/components/CustomButton';
 import { getAllProducts } from '@/services/home';
 
@@ -49,35 +49,43 @@ function Category({params}) {
   }
 
   return (
-    <div className='container'>
-        <div className='contents-container'>
-            <div className='filters'>
-              <Card className="filter-card-holder">
-                <h3>Filters</h3>
-                <hr className="divider" />
-                <div className='filter'>
-                <h4>Price</h4>
-                <CustomSlider handleChange={handleChangeSlider} value={value}/>
-                <CustomButton onClick={handleApplyFliter}>Apply Filter</CustomButton>
-                </div>
-              </Card>
-            </div>
-            {isLoading ? <div className='products-container' style={{display:"flex",alignItems:'center',justifyContent:"center"}}>
-              <CircularProgress color="info" />
-            </div>:(
-            <div className='products-container'>
-              <h2>{params.category}</h2>
-              <div className='products'>
-                {products.map((product,index)=>(
-                  <ItemCard image={product.image} productName={product.name} productPrice={product.price} key={index} onClick={()=>{
-                    router.push(`/products/${params.category}/${product.id}`)
-                  }}/>
-                ))}
-              </div>
-            </div>
-            )}
+    <div className={styles.container}>
+    <div className={styles.contentsContainer}>
+      <div className={styles.filters}>
+        <Card className={styles.filterCardHolder}>
+          <h3>Filters</h3>
+          <hr className={styles.divider} />
+          <div className={styles.filter}>
+            <h4>Price</h4>
+            <CustomSlider handleChange={handleChangeSlider} value={value} />
+            <CustomButton onClick={handleApplyFliter}>Apply Filter</CustomButton>
+          </div>
+        </Card>
+      </div>
+      {isLoading ? (
+        <div className={styles.productsContainer} style={{ display: "flex", alignItems: 'center', justifyContent: "center" }}>
+          <CircularProgress color="info" />
         </div>
+      ) : (
+        <div className={styles.productsContainer}>
+          <h2>{params.category}</h2>
+          <div className={styles.products}>
+            {products.map((product, index) => (
+              <ItemCard
+                image={product.image}
+                productName={product.name}
+                productPrice={product.price}
+                key={index}
+                onClick={() => {
+                  router.push(`/products/${params.category}/${product.id}`)
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
+  </div>
   )
 }
 

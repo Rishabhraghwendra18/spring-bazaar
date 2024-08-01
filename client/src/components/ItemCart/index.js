@@ -14,7 +14,7 @@ function ItemCart({item}) {
   return (
     <div className="item-card">
       <div className="item-photo">
-        <Image src={`/images/${item?.fileName}`} alt={item.itemTitle} width={100} height={100}/>
+        <Image src={item?.itemPhoto} alt={item.itemTitle} width={100} height={100}/>
       </div>
       <div className="item-details">
         <div className="item-name">{item.itemTitle}</div>

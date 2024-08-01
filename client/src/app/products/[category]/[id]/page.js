@@ -44,7 +44,7 @@ function Product({ params }) {
     try {
       const response = await getProductById(params.id);
       setProductDetails(response?.data);
-      setSelectedImage(`/images/${response?.data?.fileName}`);
+      setSelectedImage(response?.data?.itemPhoto);
     } catch (error) {
       console.log("Error while fetching product by id: ", error);
     }

@@ -1,27 +1,32 @@
+/* Category.module.css */
 .container {
   padding: 50px 100px;
 }
-.contents-container {
+
+.contentsContainer {
   display: grid;
   grid-template-columns: 0.2fr 1fr;
   gap: 1.3rem;
 }
+
 .products {
   display: flex;
-  /* grid-template-columns: repeat(4,1fr); */
   flex-wrap: wrap;
   gap: 2rem;
 }
-.products-container {
+
+.productsContainer {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-.filter-card-holder {
+
+.filterCardHolder {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+
 .divider {
   width: 247px;
   height: 1px;
@@ -29,8 +34,9 @@
   border: none;
   margin: 5px auto;
 }
-.filter{
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
