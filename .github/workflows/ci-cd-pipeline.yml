@@ -3,7 +3,14 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Trigger on push to main branch
+      - main  
+    paths:
+      - 'client/**'
+      - 'seller-dashboard/**'
+      - 'server/**'
+  pull_request:
+    branches:
+      - main  
     paths:
       - 'client/**'
       - 'seller-dashboard/**'
