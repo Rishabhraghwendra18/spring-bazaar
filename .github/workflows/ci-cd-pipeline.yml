@@ -37,8 +37,8 @@ jobs:
       - name: Build and push client Docker image
         run: |
           cd client
-          docker build -t yourdockerhubusername/client:${{ github.sha }} .
-          docker push yourdockerhubusername/client:${{ github.sha }}
+          docker build -t rishabhraghwendra18/spring-bazaar-client:${{ github.sha }} .
+          docker push rishabhraghwendra18/spring-bazaar-client:${{ github.sha }}
 
   build-seller-dashboard:
     if: contains(github.event.head_commit.message, 'seller-dashboard')
@@ -60,8 +60,8 @@ jobs:
       - name: Build and push seller-dashboard Docker image
         run: |
           cd seller-dashboard
-          docker build -t yourdockerhubusername/seller-dashboard:${{ github.sha }} .
-          docker push yourdockerhubusername/seller-dashboard:${{ github.sha }}
+          docker build -t rishabhraghwendra18/spring-bazaar-seller-dashboard:${{ github.sha }} .
+          docker push rishabhraghwendra18/spring-bazaar-seller-dashboard:${{ github.sha }}
 
   build-server:
     if: contains(github.event.head_commit.message, 'server')
@@ -83,5 +83,5 @@ jobs:
       - name: Build and push server Docker image
         run: |
           cd server
-          docker build -t yourdockerhubusername/server:${{ github.sha }} .
-          docker push yourdockerhubusername/server:${{ github.sha }}
+          docker build -t rishabhraghwendra18/spring-bazaar-server:${{ github.sha }} .
+          docker push rishabhraghwendra18/spring-bazaar-server:${{ github.sha }}
