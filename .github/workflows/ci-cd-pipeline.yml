@@ -53,9 +53,9 @@ jobs:
           docker push rishabhraghwendra18/spring-bazaar-seller-dashboard:${{ github.sha }}
         
        - name: Build and push server Docker image
-          if: $server == 'true'
-          run: |
-            cd server
-            ./mvnw clean install
-            docker build -t rishabhraghwendra18/spring-bazaar-server:${{ github.sha }} .
-            docker push rishabhraghwendra18/spring-bazaar-server:${{ github.sha }}
+         if: $server == 'true'
+         run: |
+          cd server
+          ./mvnw clean install
+          docker build -t rishabhraghwendra18/spring-bazaar-server:${{ github.sha }} .
+          docker push rishabhraghwendra18/spring-bazaar-server:${{ github.sha }}
