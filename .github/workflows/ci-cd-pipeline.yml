@@ -34,26 +34,26 @@ jobs:
       
       - name: Detect changed folders
         run: |
-          echo "server=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^server/' && echo true || echo false)" >> $GITHUB_ENV
-          echo "client=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^client/' && echo true || echo false)" >> $GITHUB_ENV
-          echo "seller_dashboard=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^seller-dashboard/' && echo true || echo false)" >> $GITHUB_ENV
+          echo "server=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^server/' && echo true || echo false)" >> "$GITHUB_ENV"
+          echo "client=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^client/' && echo true || echo false)" >> "$GITHUB_ENV"
+          echo "seller_dashboard=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^seller-dashboard/' && echo true || echo false)" >> "$GITHUB_ENV"
 
       - name: Build and push client Docker image
-        if: env.client == 'true'
+        if: $client == 'true'
         run: |
           cd client
           docker build -t rishabhraghwendra18/spring-bazaar-client:${{ github.sha }} .
           docker push rishabhraghwendra18/spring-bazaar-client:${{ github.sha }}
 
       - name: Build and push seller-dashboard Docker image
-        if: env.seller_dashboard == 'true'
+        if: $seller_dashboard == 'true'
         run: |
           cd seller-dashboard
           docker build -t rishabhraghwendra18/spring-bazaar-seller-dashboard:${{ github.sha }} .
           docker push rishabhraghwendra18/spring-bazaar-seller-dashboard:${{ github.sha }}
         
       - name: Build and push server Docker image
-        if: env.server == 'true'
+        if: $server == 'true'
         run: |
           cd server
           ./mvnw clean install
