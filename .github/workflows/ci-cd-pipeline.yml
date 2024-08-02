@@ -40,7 +40,7 @@ jobs:
           echo "seller_dashboard=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^seller-dashboard/' && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
       - name: Build and push client Docker image
-        if: steps.changed_folders.outputs.client == 'true'
+        if: ${{steps.changed_folders.outputs.client}} == 'true'
         run: |
           cd client
           docker build -t rishabhraghwendra18/spring-bazaar-client:${{ github.sha }} .
