@@ -47,14 +47,14 @@ jobs:
           docker push rishabhraghwendra18/spring-bazaar-client:${{ github.sha }}
 
       - name: Build and push seller-dashboard Docker image
-        if: steps.changed_folders.outputs.seller_dashboard == 'true'
+        if: ${{steps.changed_folders.outputs.seller_dashboard}} == 'true'
         run: |
           cd seller-dashboard
           docker build -t rishabhraghwendra18/spring-bazaar-seller-dashboard:${{ github.sha }} .
           docker push rishabhraghwendra18/spring-bazaar-seller-dashboard:${{ github.sha }}
         
       - name: Build and push server Docker image
-        if: steps.changed_folders.outputs.server == 'true'
+        if: ${{steps.changed_folders.outputs.server}} == 'true'
         run: |
           cd server
           ./mvnw clean install
