@@ -176,8 +176,6 @@ function CheckoutModal({ open, handleClose, items, totalCost }) {
               id="address"
               name="address"
               type="text"
-              // value={formData.email}
-              // onChange={handleChange}
               {...register("address", { required: true })}
               className="modal-input"
               required
