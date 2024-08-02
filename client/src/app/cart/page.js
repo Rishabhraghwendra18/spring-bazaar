@@ -35,6 +35,7 @@ function Cart() {
     calculateTotalCartCostBeforeCharges()
   }, [items])
   
+  // Reference for items object format
   // const items = [
   //   {
   //     photo: productPhoto1,
@@ -42,24 +43,6 @@ function Cart() {
   //     size: 'Large',
   //     price: 120
   //   },
-  //   {
-  //     photo: productPhoto1,
-  //     name: 'Gradient Graphic T-shirt',
-  //     size: 'Large',
-  //     price: 120
-  //   },
-  //   {
-  //     photo: productPhoto1,
-  //     name: 'Gradient Graphic T-shirt',
-  //     size: 'Large',
-  //     price: 120
-  //   },
-  //   {
-  //     photo: productPhoto1,
-  //     name: 'Gradient Graphic T-shirt',
-  //     size: 'Large',
-  //     price: 120
-  //   }
   // ];
   return (
     <div className='cart-container'>
