@@ -1,0 +1,724 @@
+{
+	"info": {
+		"_postman_id": "17ae1681-354a-4990-ae59-d286d4c13ed3",
+		"name": "Spring-Bazaar",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15733182"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"rishabh\",\n    \"email\":\"rishabh@test.com\",\n    \"phoneNo\":\"++919990\",\n    \"password\":\"rishabh\",\n    \"role\":\"ROLE_BUYER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_v1}}/user/register",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "testing1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "testing@test.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"testing@test.com\",\n    \"password\":\"testing\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_v1}}/user/login",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "get users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaCIsImlkIjoicmlzaGFiaEB0ZXN0LmNvbSIsInN1YiI6InJpc2hhYmhAdGVzdC5jb20iLCJpYXQiOjE3MTk3MjAyMTUsImV4cCI6MTcxOTczODIxNX0.Slq0VGxLU1GBMw3MnbMxfFTuf0utfCwRQmAcnJ1dNeG64z-dBOEpiScDgnygsGHJmg0nlMF5i1eMWJ7gFy6q9w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"rishabh@test.com\",\n    \"password\":\"rishabh\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_v1}}/user/",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"user",
+								""
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "home",
+			"item": [
+				{
+					"name": "get items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MjEwMTI2MTYsImV4cCI6MTcyMTAzMDYxNn0._H8iLGAE4nLyQlQwc8e8Av4AVrybheXxnUQKXjoiYNdoMRJRx08tmdXWo8yZx32GboR9zvsfvzZgNe1uTG0MOA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/home/",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"home",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MjA4NzE0MDYsImV4cCI6MTcyMDg4OTQwNn0.zWWPBCBgmkLL0WNDhQ3L9wIlGkj4iBmsIcQ8LIaxEeXYAZ-TjvGO1xOParmPikfWsXQ0K5G0SQfxonkAzxuKQQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/home/search?query=T-shirt",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"home",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "T-shirt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get item by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MjA0MzI5MzYsImV4cCI6MTcyMDQ1MDkzNn0.u38SQ1dT8WIgO6Lt77mlR9OAbyj0k3AtWqDDUw4oUZarBHjleFwy-nb-Vck7uPxUKHblD0BS-dB9xCIahlVlMQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/home/15",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"home",
+								"15"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "get buyer orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoiU2VsbGVyIEFjY291bnQiLCJpZCI6InNlbGxlcmFjY291bnRAdGVzdC5jb20iLCJzdWIiOiJzZWxsZXJhY2NvdW50QHRlc3QuY29tIiwiaWF0IjoxNzIwNjc0NjE2LCJleHAiOjE3MjA2OTI2MTZ9.xyQ_WxzhKBvEpd8W3vUXqSxujON3yQ0gN60-Bo1iVZpJFCxwqSh2OqzJSuOlYr0m66beApfo_Sljj-IVxEr4CA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/order/buyerOrders",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"order",
+								"buyerOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all seller orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoidGVzdGluZyIsImlkIjoidGVzdGluZ0B0ZXN0LmNvbSIsInN1YiI6InRlc3RpbmdAdGVzdC5jb20iLCJpYXQiOjE3MjEzMTI4MTAsImV4cCI6MTcyMTMzMDgxMH0.d4yTQSmlp9vOfNJPYsEUVNeDn4hQtW50w87Dn2xUNPuvZalZ3qzJ7c6_98dsmKUlYhTzjn4Z_tujrf8CStnoNA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/order/getorders",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"order",
+								"getorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get seller dashboard data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoiYnV5ZXIiLCJpZCI6ImJ1eWVyQHRlc3QuY29tIiwic3ViIjoiYnV5ZXJAdGVzdC5jb20iLCJpYXQiOjE3MjEzNjQ0NjAsImV4cCI6MTcyMTM4MjQ2MH0.wMTp8bxZPUwOeG2cyxqgg_qGFTxpuj_FX7mQmIBNlUgl79WHlIWL7iLEFAVUQ6TKgQkbkEyan32WGm2PzUvEgg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/order/sellerdashboard",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"order",
+								"sellerdashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "purchase",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MjEwMTI2MTYsImV4cCI6MTcyMTAzMDYxNn0._H8iLGAE4nLyQlQwc8e8Av4AVrybheXxnUQKXjoiYNdoMRJRx08tmdXWo8yZx32GboR9zvsfvzZgNe1uTG0MOA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryAddress\":\"A-1560\",\n    \"pinCode\":590,\n    \"itemId\":13,\n    \"orderValue\":494\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_v1}}/order/purchase",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"order",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MjEwMTI2MTYsImV4cCI6MTcyMTAzMDYxNn0._H8iLGAE4nLyQlQwc8e8Av4AVrybheXxnUQKXjoiYNdoMRJRx08tmdXWo8yZx32GboR9zvsfvzZgNe1uTG0MOA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryAddress\":\"A-1560\",\n    \"pinCode\":590,\n    \"itemId\":13,\n    \"orderValue\":494\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_v1}}/order/purchase",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"order",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "inventory",
+			"item": [
+				{
+					"name": "Add product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoidGVzdGluZyIsImlkIjoidGVzdGluZ0B0ZXN0LmNvbSIsInN1YiI6InRlc3RpbmdAdGVzdC5jb20iLCJpYXQiOjE3MjE2MjYwMzAsImV4cCI6MTcyMTY0NDAzMH0.HOfBBlf9SwFuKqkhVEN7K5nFuEOLXwS_i9r6fYrUtZGg4wGClnfn3e8W04LN-JMUhoGE4jimO5Zi4GpJrN4SkA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "file",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/rishabh/Documents/projects/spring-bazaar/client/src/assets/Frame 34.png"
+								},
+								{
+									"key": "itemQuantity",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "itemTitle",
+									"value": "Checkered Shirt",
+									"type": "text"
+								},
+								{
+									"key": "itemDescription",
+									"value": "Checkered Shirt for Men",
+									"type": "text"
+								},
+								{
+									"key": "itemPrice",
+									"value": "649",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url_v1}}/inventory/product",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"inventory",
+								"product"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MjA0MTE5ODIsImV4cCI6MTcyMDQyOTk4Mn0.W-0Q7_y4CDao5c5zbvMcP33Bsh1e8dJYpnVaSrulKx2mrDrpPrCTZCCgVQGybscj5nMeTMX-lRx-lxcDykZW2Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/inventory/product/2",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"inventory",
+								"product",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MTk4MjkzNTcsImV4cCI6MTcxOTg0NzM1N30.eZm6g4fiYgMpSwJ-YF0Bv1f1SPZtpdWU0Ef6kJNT7mvhmY8m0F2G12Fkbh_LWILJEnIWqvyhmsxENQNMoabLGw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 6,\n    \"sellerId\": \"rishabh2@test.com\",\n    \"itemQuantity\": 120,\n    \"itemTitle\": \"Oats\",\n    \"itemDescription\": \"Oats from XYZ\",\n    \"itemPrice\": 180.0,\n    \"itemPhoto\": \"/photo101\",\n    \"item\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_v1}}/inventory/product",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"inventory",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Seller All Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoicmlzaGFiaDIiLCJpZCI6InJpc2hhYmgyQHRlc3QuY29tIiwic3ViIjoicmlzaGFiaDJAdGVzdC5jb20iLCJpYXQiOjE3MjA4NzE0MDYsImV4cCI6MTcyMDg4OTQwNn0.zWWPBCBgmkLL0WNDhQ3L9wIlGkj4iBmsIcQ8LIaxEeXYAZ-TjvGO1xOParmPikfWsXQ0K5G0SQfxonkAzxuKQQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_v1}}/inventory/product",
+							"host": [
+								"{{base_url_v1}}"
+							],
+							"path": [
+								"inventory",
+								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}

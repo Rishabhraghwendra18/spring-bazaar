@@ -40,6 +40,8 @@ public class SecurityConfig {
                 requestMatchers -> requestMatchers.requestMatchers("/user/login").permitAll()
                         .requestMatchers("/user/register").permitAll()
                         .requestMatchers("/home/**").permitAll()
+                        .requestMatchers("/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .anyRequest().authenticated()
         );
