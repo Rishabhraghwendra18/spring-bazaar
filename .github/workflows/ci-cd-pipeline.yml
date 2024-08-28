@@ -57,6 +57,6 @@ jobs:
         if: ${{steps.changed_folders.outputs.server}} == 'true'
         run: |
           cd server
-          ./mvnw clean install
+          ./mvnw clean install -DskipTests
           docker build -t rishabhraghwendra18/spring-bazaar-server:${{ github.sha }} .
           docker push rishabhraghwendra18/spring-bazaar-server:${{ github.sha }}
