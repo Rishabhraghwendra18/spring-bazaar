@@ -1,7 +1,7 @@
 # spring-bazaar
 A E-Commerce site built using Java Spring Boot and NextJs.
 
-# Local Environment Setup
+## Local Environment Setup
 - Run `docker compose up` in server folder to spin up the mysql server container.
 - Wait for mysql server to start until below lines are printed in console
 ```
@@ -11,6 +11,19 @@ A E-Commerce site built using Java Spring Boot and NextJs.
 - After successful startup, log into mysql container using `docker exec -it <container_id> bash`
 - Run `mysql -u root -p` and enter password to log into mysql
 - Create a database `spring-bazaar` and then run the spring boot application.
+- Setup below environment variables:
+```
+export razorpay_key_id=
+export razorpay_key_secret=
+export CLOUDINARY_URL=
+```
+- Server is now ready to accept requests.
+
+## API Documentation
+API documentations can be found using Swagger UI. 
+- Run the server.
+- Click [here](http://localhost:8080/api/v1/swagger-ui/index.html) to open Swagger UI
+- To view API documentation in raw JSON format visit: http://localhost:8080/api/v1/api-docs
 
 ## Requirements (v1)
 ### User (Buyer)
