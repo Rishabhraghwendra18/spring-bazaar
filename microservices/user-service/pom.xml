@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.springbazaar</groupId>
-	<artifactId>user-microservice</artifactId>
+	<artifactId>user-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>user-microservice</name>
+	<name>user-service</name>
 	<description>User microservice for user registeration, and authentication</description>
 	<url/>
 	<licenses>
