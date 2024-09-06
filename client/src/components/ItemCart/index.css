@@ -1,0 +1,59 @@
+.item-card {
+  width: 667px;
+  height: 124px;
+  display: grid;
+  grid-template-columns: 124px 1fr 30px;
+  gap: 20px;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+}
+
+.item-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-name {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+}
+
+.item-size {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: regular;
+  font-size: 14px;
+  color: black;
+}
+
+.item-size-value {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.item-price {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  color: black;
+}
+
+.item-delete {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.delete-icon {
+  color: #FF3333;
+  cursor: pointer;
+}

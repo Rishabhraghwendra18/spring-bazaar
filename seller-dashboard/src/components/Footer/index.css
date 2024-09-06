@@ -1,0 +1,86 @@
+.footer {
+  background-color: black;
+  width: 100%;
+  color: white;
+  /* height: 499px; */
+  padding: 40px 50px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.footer-row {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.footer-title {
+  font-family: 'Integral CF', sans-serif;
+  font-weight: bold;
+  font-size: 33.4px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.footer-description {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: white;
+}
+
+.footer-heading {
+  font-family: 'Integral CF', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 5px;
+}
+
+.footer-links a {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: white;
+  text-decoration: none;
+}
+
+.footer-divider {
+  width: 1240px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+  margin: 20px auto;
+}
+
+.footer-row-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-developed-by {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: white;
+}
+
+.footer-payment-logos img {
+  margin-left: 10px;
+  height: 20px; /* Adjust as needed */
+  width: auto;
+}
