@@ -1,0 +1,8 @@
+target/
+.git/
+.gitignore
+HELP.md
+.idea/
+
+# will not be included in build
+Dockerfile
