@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # mysql_db:
+  #   image: mysql
+  #   ports:
+  #     - 5000:3306
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 1
+  #     MYSQL_DATABASE: spring-bazaar
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+  #     interval: 10s
+  #     timeout: 30s
+  #     retries: 150
+  #   networks:
+  #     - spring-bazaar-networks
+  
+  # config_server:
+  #   image: rishabhraghwendra18/config-server-spring-bazaar
+  #   ports:
+  #     - 8888:8888
+  #   environment:
+  #     SPRING.CLOUD.CONFIG.SERVER.GIT.URI: https://github.com/Rishabhraghwendra18/spring-bazaar
+  #   networks:
+  #     - spring-bazaar-networks
+  
+  api_gateway:
+    image: rishabhraghwendra18/api-gateway-spring-bazaar
+    ports:
+      - 8765:8765
+    environment:
+       JWT.SECRET.KEY: lkjlkjlkjlkjlkjlkj
+       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+    networks:
+      - spring-bazaar-networks
+
+  service-registry:
+    image: rishabhraghwendra18/service-registry-spring-bazaar
+    ports:
+      - 8761:8761
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - spring-bazaar-networks
+
+
+  # user_service:
+  #   image: rishabhraghwendra18/user-service-spring-bazaar
+  #   ports:
+  #     - 8000:8000
+  #   environment:
+  #      JWT.SECRET.KEY: QO1S52zJW5FVHq84B9E6n0c2LW4uGhdOJKqMkG2exBLdwsTLo9cMlzH8pF4fYjR7HzYX8VIxT62pWukIotMv54vDu6PQq8gakqCvdA0GiWmTUSblEyDxLs9PfSNryUx
+  #      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://service_registry:8761/eureka
+  #      SPRING.DATASOURCE.URL: jdbc:mysql://mysql_db:5000/spring-bazaar
+  #      SPRING.DATASOURCE.USERNAME: root
+  #      SPRING.DATASOURCE.PASSWORD: 1
+  #      SPRING.JPA.HIBERNATE.DDL-AUTO: update
+  #   depends_on:
+  #       mysql_db:
+  #         condition: service_healthy
+  #       # config_server:
+  #       #   condition: service_started
+  #       api_gateway:
+  #         condition: service_started
+  #       service_registry:
+  #         condition: service_started
+  #   networks:
+  #     - spring-bazaar-networks
+
+networks:
+  spring-bazaar-networks:
+    driver: bridge
